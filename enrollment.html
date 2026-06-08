@@ -683,8 +683,10 @@
             <input type="text" id="hcpAddress" name="hcpAddress" />
           </div>
         </div>
-        <p style="font-size:.8rem;color:var(--muted);margin-top:16px;">(Health Care Professional signature is obtained in person at the center.)</p>
-        <div class="sig-pair">
+        <p style="font-size:.85rem;color:var(--muted);margin-top:16px;font-style:italic;background:#fff8f0;border-left:4px solid var(--primary);padding:10px 14px;border-radius:0 6px 6px 0;">
+          Please print this section, have it signed by your child's health care professional, and bring it to the center on or before the first day of enrollment.
+        </p>
+<div class="sig-pair">
           <div class="sig-pad-wrap">
             <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
             <div class="sig-canvas-wrap">
@@ -841,22 +843,6 @@
         <div class="radio-group">
           <label><input type="radio" name="photoConsent" value="I consent" required /> I consent</label>
           <label><input type="radio" name="photoConsent" value="I do not consent" /> I do not consent</label>
-        </div>
-<div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-photo" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-photo-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-photo-data" name="sig-photo-data" />
-          </div>
-          <div class="sig-date-field">
-            <label for="sigPhotoDate">Date Signed</label>
-            <input type="date" id="sigPhotoDate" name="sigPhotoDate" />
-          </div>
         </div>
       </div>
 
