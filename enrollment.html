@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enrollment Form — Divine Kids</title>
+  <link rel="icon" type="image/png" href="logo-removebg.png" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .form-section h4 { font-size:.95rem; font-weight:700; color:#444; margin:16px 0 10px; }
+    .check-list { display:flex; flex-wrap:wrap; gap:10px 28px; margin-top:6px; }
+    .check-list label { font-weight:400; display:flex; align-items:center; gap:6px; cursor:pointer; min-width:180px; }
+    .policy-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px 20px; margin-top:8px; }
+    @media(max-width:600px){ .policy-grid { grid-template-columns:1fr; } }
+    .policy-grid label { font-weight:400; display:flex; align-items:flex-start; gap:6px; cursor:pointer; font-size:.85rem; }
+    .schedule-table { width:100%; border-collapse:collapse; margin-top:10px; font-size:.88rem; }
+    .schedule-table th, .schedule-table td { border:1px solid #e0cdb8; padding:7px 10px; text-align:center; }
+    .schedule-table th { background:#fff8f0; font-weight:600; color:var(--primary); }
+    .schedule-table input[type="text"] { border:none; width:100%; padding:2px 4px; font-size:.85rem; background:transparent; }
+    .schedule-table input[type="text"]:focus { outline:1px solid var(--primary); }
+    .vaccine-table { width:100%; border-collapse:collapse; margin-top:10px; font-size:.85rem; }
+    .vaccine-table th, .vaccine-table td { border:1px solid #e0cdb8; padding:6px 10px; }
+    .vaccine-table th { background:#fff8f0; font-weight:600; color:var(--primary); }
+    .vaccine-table td input[type="date"] { border:none; font-size:.82rem; padding:2px 4px; background:transparent; width:100%; }
+    .vaccine-table .vaccine-name { font-weight:600; color:var(--text); }
+    .inline-fields { display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; }
+    .inline-fields .form-group { flex:1; min-width:160px; }
+    .section-note-box { background:#fff8f0; border-left:4px solid var(--primary); padding:12px 16px; font-size:.875rem; color:var(--text); margin-bottom:14px; line-height:1.6; border-radius:0 6px 6px 0; }
+    .sig-line { border-bottom:1.5px solid #999; margin-top:40px; margin-bottom:4px; }
+    .sig-label { font-size:.8rem; color:var(--muted); }
+    .two-sig { display:grid; grid-template-columns:2fr 1fr; gap:24px; margin-top:12px; }
+    @media(max-width:500px){ .two-sig { grid-template-columns:1fr; } }
+    .vision-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:center; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-spacer"></div><a class="logo" href="index.html">
+        <img class="logo-icon" src="logo-removebg.png" alt="Divine Kids logo" />
+        <div class="logo-text">
+          <h1>Divine Kids</h1>
+        </div>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="enrollment.html" class="active">Enrollment Form</a>
+        <a href="contact.html">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <h2>Child <span>Enrollment Form</span></h2>
+    <p>Please complete all sections. A confirmation will be emailed to you upon submission.</p>
+  </div>
+
+  <div class="form-wrapper">
+    <div id="success-banner" class="success-banner">
+      <strong>Thank you! Your enrollment form has been submitted.</strong><br />
+      A confirmation email has been sent to your email address and to our center. We look forward to welcoming your child!
+    </div>
+
+    <form id="enrollmentForm" novalidate>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 1 — GENERAL INFORMATION
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 1 — General Information</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="operationName">Operation's Name</label>
+            <input type="text" id="operationName" name="operationName" value="Divine Kids" />
+          </div>
+          <div class="form-group">
+            <label for="directorName">Director's Name</label>
+            <input type="text" id="directorName" name="directorName" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="childFullName">Child's Full Name <span class="required">*</span></label>
+            <input type="text" id="childFullName" name="childFullName" required />
+          </div>
+          <div class="form-group">
+            <label for="childDOB">Child's Date of Birth <span class="required">*</span></label>
+            <input type="date" id="childDOB" name="childDOB" required />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Child Lives With: <span class="required">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="childLivesWith" value="Both parents" required /> Both parents</label>
+            <label><input type="radio" name="childLivesWith" value="Mom" /> Mom</label>
+            <label><input type="radio" name="childLivesWith" value="Dad" /> Dad</label>
+            <label><input type="radio" name="childLivesWith" value="Guardian" /> Guardian</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="childAddress">Child's Home Street Address, City, State and ZIP Code</label>
+            <input type="text" id="childAddress" name="childAddress" placeholder="Street, City, State, ZIP" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dateAdmission">Date of Admission</label>
+            <input type="date" id="dateAdmission" name="dateAdmission" />
+          </div>
+          <div class="form-group">
+            <label for="dateWithdrawal">Date of Withdrawal</label>
+            <input type="date" id="dateWithdrawal" name="dateWithdrawal" />
+          </div>
+        </div>
+
+        <!-- Parent / Guardian 1 -->
+        <h4>Parent or Guardian 1</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parent1Name">Name of Parent or Guardian 1 <span class="required">*</span></label>
+            <input type="text" id="parent1Name" name="parent1Name" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="parent1Address">Address of Parent or Guardian 1, if different from child's</label>
+            <input type="text" id="parent1Address" name="parent1Address" placeholder="Street, City, State, ZIP" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parent1Email">Email Address <span class="required">*</span></label>
+            <input type="email" id="parent1Email" name="parent1Email" required placeholder="parent@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="parent1Employer">Employer</label>
+            <input type="text" id="parent1Employer" name="parent1Employer" />
+          </div>
+        </div>
+
+        <!-- Parent / Guardian 2 -->
+        <h4>Parent or Guardian 2</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parent2Name">Name of Parent or Guardian 2</label>
+            <input type="text" id="parent2Name" name="parent2Name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="parent2Address">Address of Parent or Guardian 2, if different from child's</label>
+            <input type="text" id="parent2Address" name="parent2Address" placeholder="Street, City, State, ZIP" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parent2Email">Email Address</label>
+            <input type="email" id="parent2Email" name="parent2Email" />
+          </div>
+          <div class="form-group">
+            <label for="parent2Employer">Employer</label>
+            <input type="text" id="parent2Employer" name="parent2Employer" />
+          </div>
+        </div>
+
+        <!-- Phone Numbers -->
+        <h4>Phone Numbers Where Parents or Guardian May Be Reached While Child Is in Care</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="parent1Phone">Parent 1 Area Code and Phone No. <span class="required">*</span></label>
+            <input type="tel" id="parent1Phone" name="parent1Phone" required placeholder="(555) 000-0000" />
+          </div>
+          <div class="form-group">
+            <label for="parent2Phone">Parent 2 Area Code and Phone No.</label>
+            <input type="tel" id="parent2Phone" name="parent2Phone" placeholder="(555) 000-0000" />
+          </div>
+          <div class="form-group">
+            <label for="guardianPhone">Guardian's Area Code and Phone No.</label>
+            <input type="tel" id="guardianPhone" name="guardianPhone" placeholder="(555) 000-0000" />
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Custody Documents on File?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="custodyDocs" value="Yes" /> Yes</label>
+            <label><input type="radio" name="custodyDocs" value="No" /> No</label>
+          </div>
+        </div>
+
+        <!-- Emergency Contact -->
+        <h4>In Case of an Emergency, When the Parent or Guardian Cannot Be Reached, Call:</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ec1Name">Name of Emergency Contact <span class="required">*</span></label>
+            <input type="text" id="ec1Name" name="ec1Name" required />
+          </div>
+          <div class="form-group">
+            <label for="ec1Relation">Relationship</label>
+            <input type="text" id="ec1Relation" name="ec1Relation" />
+          </div>
+          <div class="form-group">
+            <label for="ec1Phone">Area Code and Phone No. <span class="required">*</span></label>
+            <input type="tel" id="ec1Phone" name="ec1Phone" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="ec1Address">Street Address, City, State and ZIP Code</label>
+            <input type="text" id="ec1Address" name="ec1Address" placeholder="Street, City, State, ZIP" />
+          </div>
+        </div>
+
+        <!-- Authorized Release / Pick-Up -->
+        <h4>Authorized Release Persons</h4>
+        <div class="section-note-box">
+          I authorize the child care operation to release my child to leave the child care operation only with the following persons. Please list name and phone number for each. Children will only be released to a parent or guardian or to a person designated by the parent or guardian after verification of ID.
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pu1Name">Name</label>
+            <input type="text" id="pu1Name" name="pu1Name" />
+          </div>
+          <div class="form-group">
+            <label for="pu1Phone">Area Code and Phone No.</label>
+            <input type="tel" id="pu1Phone" name="pu1Phone" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pu2Name">Name</label>
+            <input type="text" id="pu2Name" name="pu2Name" />
+          </div>
+          <div class="form-group">
+            <label for="pu2Phone">Area Code and Phone No.</label>
+            <input type="tel" id="pu2Phone" name="pu2Phone" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pu3Name">Name</label>
+            <input type="text" id="pu3Name" name="pu3Name" />
+          </div>
+          <div class="form-group">
+            <label for="pu3Phone">Area Code and Phone No.</label>
+            <input type="tel" id="pu3Phone" name="pu3Phone" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 3A — MEDICAL INSURANCE (Custom)
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 1A — Child's Medical Insurance Information</h3>
+        <p class="section-note">
+          The Center does not carry liability insurance; therefore, the child's medical insurance is required for medical emergencies when parents or an alternative contact cannot be reached, and it is necessary for taking the child to a medical facility.
+        </p>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Medical Insurance Card Attached: <span class="required">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="insuranceCardAttached" value="Yes" required /> Yes</label>
+            <label><input type="radio" name="insuranceCardAttached" value="No" /> No</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="insuranceCompany">Insurance Company Name</label>
+            <input type="text" id="insuranceCompany" name="insuranceCompany" />
+          </div>
+          <div class="form-group">
+            <label for="insurancePolicyNum">Policy / Member ID Number</label>
+            <input type="text" id="insurancePolicyNum" name="insurancePolicyNum" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="insuranceHolder">Policy Holder Name</label>
+            <input type="text" id="insuranceHolder" name="insuranceHolder" />
+          </div>
+          <div class="form-group">
+            <label for="insurancePhone">Insurance Contact Phone</label>
+            <input type="tel" id="insurancePhone" name="insurancePhone" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 2 — CONSENT INFORMATION
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 2 — Consent Information</h3>
+
+        <!-- 2.1 Transportation -->
+        <h4>1. Transportation</h4>
+        <p style="font-size:.875rem;margin-bottom:8px;">I give consent for my child to be transported and supervised by the operation's employees. Check all that apply.</p>
+        <div class="check-list">
+          <label><input type="checkbox" name="transportEmergency" value="For emergency care" /> For emergency care</label>
+          <label><input type="checkbox" name="transportFieldTrips" value="On field trips" /> On field trips</label>
+          <label><input type="checkbox" name="transportHome" value="To and from home" /> To and from home</label>
+          <label><input type="checkbox" name="transportSchool" value="To and from school" /> To and from school</label>
+        </div>
+
+        <!-- 2.2 Field Trips -->
+        <h4>2. Field Trips</h4>
+        <div class="radio-group" style="flex-direction:column;gap:8px;">
+          <label><input type="radio" name="fieldTrips" value="I give consent for my child to participate in field trips." /> I give consent for my child to participate in field trips.</label>
+          <label><input type="radio" name="fieldTrips" value="I do not give consent for my child to participate in field trips." /> I do not give consent for my child to participate in field trips.</label>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label for="fieldTripsComments">Comments</label>
+          <textarea id="fieldTripsComments" name="fieldTripsComments" style="min-height:60px;"></textarea>
+        </div>
+
+        <!-- 2.3 Water Activities -->
+        <h4>3. Water Activities</h4>
+        <p style="font-size:.875rem;margin-bottom:8px;">I give consent for my child to participate in the following water activities. Check all that apply.</p>
+        <div class="check-list">
+          <label><input type="checkbox" name="waterTablePlay" value="Water table play" /> Water table play</label>
+          <label><input type="checkbox" name="waterSprinkler" value="Sprinkler play" /> Sprinkler play</label>
+          <label><input type="checkbox" name="waterWading" value="Wading pools" /> Wading pools</label>
+          <label><input type="checkbox" name="waterSwimming" value="Swimming pools" /> Swimming pools</label>
+          <label><input type="checkbox" name="waterAquatic" value="Aquatic playgrounds" /> Aquatic playgrounds</label>
+        </div>
+        <div class="form-group" style="margin-top:12px;">
+          <label>1. Is your child a competent swimmer?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="competentSwimmer" value="Yes" /> Yes</label>
+            <label><input type="radio" name="competentSwimmer" value="No" /> No</label>
+          </div>
+          <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">If no, your child is required to wear a life jacket while in or near a swimming pool.</p>
+        </div>
+        <div class="form-group" style="margin-top:10px;">
+          <label>2. Does your child have any physical, health, behavioral or other condition that would put them at risk while swimming?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="swimmingRisk" value="Yes" /> Yes</label>
+            <label><input type="radio" name="swimmingRisk" value="No" /> No</label>
+          </div>
+          <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">If yes, your child is required to wear a life jacket while in or near a swimming pool.</p>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:8px;font-style:italic;"><strong>Note:</strong> A competent swimmer can enter and exit a pool safely on their own, tread water or float on their back for one minute, and swim 25 yards with no assistance.</p>
+
+        <!-- 2.4 Receipt of Written Operational Policies -->
+        <h4>4. Receipt of Written Operational Policies</h4>
+        <p style="font-size:.875rem;margin-bottom:8px;">I acknowledge receipt of the facility's operational policies, including those for the following. Check all that apply.</p>
+        <div class="policy-grid">
+          <label><input type="checkbox" name="policyDiscipline" /> Discipline and guidance</label>
+          <label><input type="checkbox" name="policyRelease" /> Procedures for release of children</label>
+          <label><input type="checkbox" name="policySuspension" /> Suspension and expulsion</label>
+          <label><input type="checkbox" name="policyIllness" /> Illness and exclusion criteria</label>
+          <label><input type="checkbox" name="policyEmergency" /> Emergency plans</label>
+          <label><input type="checkbox" name="policyMedications" /> Procedures for dispensing medications</label>
+          <label><input type="checkbox" name="policyHealthChecks" /> Procedures for conducting health checks</label>
+          <label><input type="checkbox" name="policyImmunization" /> Immunization requirements for children</label>
+          <label><input type="checkbox" name="policySafeSleep" /> Safe sleep</label>
+          <label><input type="checkbox" name="policyMeals" /> Meals and food service practices</label>
+          <label><input type="checkbox" name="policyDiscussConcerns" /> Procedures for parents to discuss concerns with the director</label>
+          <label><input type="checkbox" name="policyVisitCenter" /> Procedures to visit the center without securing prior approval</label>
+          <label><input type="checkbox" name="policyParticipate" /> Procedures for parents to participate in activities</label>
+          <label><input type="checkbox" name="policyInclusive" /> Procedures for supporting inclusive services</label>
+          <label><input type="checkbox" name="policyPhysicalActivity" /> Promotion of indoor and outdoor physical activity including criteria for extreme weather conditions</label>
+          <label><input type="checkbox" name="policyCCR" /> Procedures for parents to contact Child Care Regulation (CCR), DFPS, Child Abuse Hotline and CCR website</label>
+        </div>
+
+        <!-- 2.5 Meals -->
+        <h4>5. Meals</h4>
+        <p style="font-size:.875rem;margin-bottom:8px;">I understand the following meals will be served to my child while in care. Check all that apply.</p>
+        <div class="check-list">
+          <label><input type="checkbox" name="mealNone" /> None</label>
+          <label><input type="checkbox" name="mealBreakfast" /> Breakfast</label>
+          <label><input type="checkbox" name="mealMorningSnack" /> Morning snack</label>
+          <label><input type="checkbox" name="mealLunch" /> Lunch</label>
+          <label><input type="checkbox" name="mealAfternoonSnack" /> Afternoon snack</label>
+          <label><input type="checkbox" name="mealSupper" /> Supper</label>
+          <label><input type="checkbox" name="mealEveningSnack" /> Evening snack</label>
+        </div>
+
+        <!-- 2.6 Days and Times in Care -->
+        <h4>6. Days and Times in Care</h4>
+        <p style="font-size:.875rem;margin-bottom:4px;">My child is normally in care on the following days and times.</p>
+        <table class="schedule-table">
+          <thead>
+            <tr><th>Day of Week</th><th>A.M.</th><th>P.M.</th><th>Day of Week</th><th>A.M.</th><th>P.M.</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monday</td>
+              <td><input type="text" name="monAM" placeholder="e.g. 7:30" /></td>
+              <td><input type="text" name="monPM" placeholder="e.g. 5:30" /></td>
+              <td>Friday</td>
+              <td><input type="text" name="friAM" /></td>
+              <td><input type="text" name="friPM" /></td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td><input type="text" name="tueAM" /></td>
+              <td><input type="text" name="tuePM" /></td>
+              <td>Saturday</td>
+              <td><input type="text" name="satAM" /></td>
+              <td><input type="text" name="satPM" /></td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td><input type="text" name="wedAM" /></td>
+              <td><input type="text" name="wedPM" /></td>
+              <td>Sunday</td>
+              <td><input type="text" name="sunAM" /></td>
+              <td><input type="text" name="sunPM" /></td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td><input type="text" name="thuAM" /></td>
+              <td><input type="text" name="thuPM" /></td>
+              <td></td><td></td><td></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- 2.7 Receipt of Parent's Rights -->
+        <h4>7. Receipt of Parent's Rights</h4>
+        <div class="consent-row">
+          <input type="checkbox" id="parentRightsAck" name="parentRightsAck" />
+          <label for="parentRightsAck">I acknowledge I have received a written copy of my rights as a parent or guardian of a child enrolled at this facility.</label>
+        </div>
+
+        <!-- 2.8 Child's Special Care Needs -->
+        <h4>8. Child's Special Care Needs</h4>
+        <p style="font-size:.875rem;margin-bottom:8px;">Check all that apply.</p>
+        <div class="policy-grid">
+          <label><input type="checkbox" name="needEnvAllergies" /> Environmental allergies</label>
+          <label><input type="checkbox" name="needActivityLimits" /> Limitations or restrictions on child's activities</label>
+          <label><input type="checkbox" name="needFoodIntolerance" /> Food intolerances</label>
+          <label><input type="checkbox" name="needAccommodations" /> Reasonable accommodations or modifications</label>
+          <label><input type="checkbox" name="needExistingIllness" /> Existing illness</label>
+          <label><input type="checkbox" name="needAdaptiveEquip" /> Adaptive equipment, include instructions below</label>
+          <label><input type="checkbox" name="needPreviousIllness" /> Previous serious illness</label>
+          <label><input type="checkbox" name="needComplications" /> Symptoms or indications of complications</label>
+          <label><input type="checkbox" name="needInjuries" /> Injuries and hospitalizations in the past 12 months</label>
+          <label><input type="checkbox" name="needMedications" /> Medications prescribed for continuous long-term use</label>
+        </div>
+        <div class="form-row" style="margin-top:10px;">
+          <div class="form-group full">
+            <label for="specialNeedsOther">Other:</label>
+            <input type="text" id="specialNeedsOther" name="specialNeedsOther" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="specialNeedsExplain">Explain any needs selected above:</label>
+            <textarea id="specialNeedsExplain" name="specialNeedsExplain" style="min-height:80px;"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Does your child have diagnosed food allergies?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="foodAllergies" value="Yes" /> Yes</label>
+              <label><input type="radio" name="foodAllergies" value="No" /> No</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="foodAllergyPlanDate">Food Allergy Emergency Plan Submitted Date</label>
+            <input type="date" id="foodAllergyPlanDate" name="foodAllergyPlanDate" />
+          </div>
+        </div>
+
+        <!-- 2.9 School-Age Children -->
+        <h4>9. School-Age Children (if applicable)</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="schoolName">My child attends the following school</label>
+            <input type="text" id="schoolName" name="schoolName" />
+          </div>
+          <div class="form-group">
+            <label for="schoolPhone">School Area Code and Phone No.</label>
+            <input type="tel" id="schoolPhone" name="schoolPhone" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label>My child has permission to:</label>
+          <div class="check-list" style="margin-top:6px;">
+            <label><input type="checkbox" name="permWalkHome" /> Walk to or from school or home</label>
+            <label><input type="checkbox" name="permRideBus" /> Ride a bus</label>
+            <label><input type="checkbox" name="permSiblingRelease" /> Be released to the care of their sibling younger than 18 years old</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="pickupLocations">Authorized pick up or drop off locations other than the child's address:</label>
+            <textarea id="pickupLocations" name="pickupLocations" style="min-height:60px;"></textarea>
+          </div>
+        </div>
+        <div class="consent-row">
+          <input type="checkbox" name="immunizationCurrent" />
+          <label>Child's required immunizations, vision and hearing screening are current and on file at their school.</label>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 3 — AUTHORIZATION FOR EMERGENCY MEDICAL ATTENTION
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 3 — Authorization For Emergency Medical Attention</h3>
+        <p class="section-note">In the event I cannot be reached to arrange for emergency medical care, I authorize the person in charge to take my child to:</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="physicianName">Name of Physician</label>
+            <input type="text" id="physicianName" name="physicianName" />
+          </div>
+          <div class="form-group">
+            <label for="physicianPhone">Area Code and Phone No.</label>
+            <input type="tel" id="physicianPhone" name="physicianPhone" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="physicianAddress">Street Address, City, State and ZIP Code</label>
+            <input type="text" id="physicianAddress" name="physicianAddress" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emergencyFacilityName">Name of Emergency Care Facility</label>
+            <input type="text" id="emergencyFacilityName" name="emergencyFacilityName" />
+          </div>
+          <div class="form-group">
+            <label for="emergencyFacilityPhone">Area Code and Phone No.</label>
+            <input type="tel" id="emergencyFacilityPhone" name="emergencyFacilityPhone" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="emergencyFacilityAddress">Street Address, City, State and ZIP Code</label>
+            <input type="text" id="emergencyFacilityAddress" name="emergencyFacilityAddress" />
+          </div>
+        </div>
+
+        <div class="consent-row" style="margin-top:8px;">
+          <input type="checkbox" id="emergencyMedConsent" name="emergencyMedConsent" />
+          <label for="emergencyMedConsent">I give consent for the facility to secure any and all necessary emergency medical care for my child.</label>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 4 — REQUIREMENTS FOR EXCLUSION FROM COMPLIANCE
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 4 — Requirements for Exclusion from Compliance</h3>
+        <div class="radio-group" style="flex-direction:column;gap:12px;">
+          <label style="align-items:flex-start;">
+            <input type="radio" name="exclusionCompliance" value="immunization_affidavit" style="margin-top:3px;flex-shrink:0;" />
+            <span>I have attached a signed and dated affidavit stating that I decline immunizations by reason of conscience, including religious belief, on the form described by Health and Safety Code Section 161.0041 submitted no later than the 90th day after the affidavit is notarized.</span>
+          </label>
+          <label style="align-items:flex-start;">
+            <input type="radio" name="exclusionCompliance" value="vision_hearing_affidavit" style="margin-top:3px;flex-shrink:0;" />
+            <span>I have attached a signed and dated affidavit stating that the vision or hearing screening conflicts with the tenets or practices of a church or religious denomination that I am an adherent or member of.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 5 — VISION EXAM RESULTS
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 5 — Vision Exam Results</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="visionRightEye">Right Eye 20/</label>
+            <input type="text" id="visionRightEye" name="visionRightEye" placeholder="e.g. 20" />
+          </div>
+          <div class="form-group">
+            <label for="visionLeftEye">Left Eye 20/</label>
+            <input type="text" id="visionLeftEye" name="visionLeftEye" placeholder="e.g. 20" />
+          </div>
+          <div class="form-group">
+            <label>Result</label>
+            <div class="radio-group">
+              <label><input type="radio" name="visionResult" value="Pass" /> Pass</label>
+              <label><input type="radio" name="visionResult" value="Fail" /> Fail</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 6 — HEARING EXAM RESULTS
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 6 — Hearing Exam Results</h3>
+        <table class="vaccine-table">
+          <thead>
+            <tr>
+              <th>Ear</th>
+              <th>1000 Hz</th>
+              <th>2000 Hz</th>
+              <th>4000 Hz</th>
+              <th>Pass or Fail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Right</td>
+              <td><input type="text" name="hearingRight1000" /></td>
+              <td><input type="text" name="hearingRight2000" /></td>
+              <td><input type="text" name="hearingRight4000" /></td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="hearingRightResult" value="Pass" /> Pass</label>
+                  <label><input type="radio" name="hearingRightResult" value="Fail" /> Fail</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Left</td>
+              <td><input type="text" name="hearingLeft1000" /></td>
+              <td><input type="text" name="hearingLeft2000" /></td>
+              <td><input type="text" name="hearingLeft4000" /></td>
+              <td>
+                <div class="radio-group">
+                  <label><input type="radio" name="hearingLeftResult" value="Pass" /> Pass</label>
+                  <label><input type="radio" name="hearingLeftResult" value="Fail" /> Fail</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 7 — ADMISSION REQUIREMENT
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 7 — Admission Requirement</h3>
+        <p class="section-note">If your child does not attend pre-kindergarten or school away from the child care operation, one of the following must be presented when your child is admitted to the child care operation or within one week of admission.</p>
+        <div class="radio-group" style="flex-direction:column;gap:12px;">
+          <label style="align-items:flex-start;">
+            <input type="radio" name="admissionReq" value="hcp_statement" style="margin-top:3px;flex-shrink:0;" />
+            <span>Health Care Professional's Statement: I have examined the above named child within the past year and find they are able to take part in the day care program.</span>
+          </label>
+          <label style="align-items:flex-start;">
+            <input type="radio" name="admissionReq" value="signed_copy_attached" style="margin-top:3px;flex-shrink:0;" />
+            <span>A signed and dated copy of a health care professional's statement is attached.</span>
+          </label>
+          <label style="align-items:flex-start;">
+            <input type="radio" name="admissionReq" value="religious_conflict" style="margin-top:3px;flex-shrink:0;" />
+            <span>Medical diagnosis and treatment conflict with the tenets and practices of a recognized religious organization, which I adhere to or am a member of. I have attached a signed and dated affidavit stating this.</span>
+          </label>
+          <label style="align-items:flex-start;">
+            <input type="radio" name="admissionReq" value="within_12_months" style="margin-top:3px;flex-shrink:0;" />
+            <span>My child has been examined within the past year by a health care professional and is able to participate in the day care program. Within 12 months of admission, I will obtain a health care professional's signed statement and submit it to the child care operation.</span>
+          </label>
+        </div>
+        <div class="form-row" style="margin-top:14px;">
+          <div class="form-group full">
+            <label for="hcpName">If selected, Health Care Professional Name</label>
+            <input type="text" id="hcpName" name="hcpName" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="hcpAddress">If selected, Health Care Professional Street Address, City, State and ZIP Code</label>
+            <input type="text" id="hcpAddress" name="hcpAddress" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 8 — VACCINE INFORMATION
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 8 — Vaccine Information</h3>
+        <p class="section-note">The following vaccines require multiple doses over time. Provide the date your child received each dose.</p>
+        <table class="vaccine-table">
+          <thead>
+            <tr><th>Vaccine</th><th>Vaccine Schedule</th><th>Date Child Received Vaccine</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="vaccine-name" rowspan="3">Hepatitis B</td><td>Birth (first dose)</td><td><input type="date" name="hepB1" /></td></tr>
+            <tr><td>1 – 2 months (second dose)</td><td><input type="date" name="hepB2" /></td></tr>
+            <tr><td>6 – 18 months (third dose)</td><td><input type="date" name="hepB3" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="3">Rotavirus</td><td>2 months (first dose)</td><td><input type="date" name="rota1" /></td></tr>
+            <tr><td>4 months (second dose)</td><td><input type="date" name="rota2" /></td></tr>
+            <tr><td>6 months (third dose)</td><td><input type="date" name="rota3" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="5">Diphtheria, Tetanus, Pertussis</td><td>2 months (first dose)</td><td><input type="date" name="dtap1" /></td></tr>
+            <tr><td>4 months (second dose)</td><td><input type="date" name="dtap2" /></td></tr>
+            <tr><td>6 months (third dose)</td><td><input type="date" name="dtap3" /></td></tr>
+            <tr><td>15 – 18 months (fourth dose)</td><td><input type="date" name="dtap4" /></td></tr>
+            <tr><td>4 – 6 years (fifth dose)</td><td><input type="date" name="dtap5" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="4">Haemophilus Influenza Type B</td><td>2 months (first dose)</td><td><input type="date" name="hib1" /></td></tr>
+            <tr><td>4 months (second dose)</td><td><input type="date" name="hib2" /></td></tr>
+            <tr><td>6 months (third dose)</td><td><input type="date" name="hib3" /></td></tr>
+            <tr><td>12 – 15 months (fourth dose)</td><td><input type="date" name="hib4" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="3">Pneumococcal</td><td>2 months (first dose)</td><td><input type="date" name="pcv1" /></td></tr>
+            <tr><td>4 months (second dose)</td><td><input type="date" name="pcv2" /></td></tr>
+            <tr><td>6 months (third dose)</td><td><input type="date" name="pcv3" /></td></tr>
+            <tr><td></td><td>12 – 15 months (fourth dose)</td><td><input type="date" name="pcv4" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="4">Inactivated Poliovirus</td><td>2 months (first dose)</td><td><input type="date" name="ipv1" /></td></tr>
+            <tr><td>4 months (second dose)</td><td><input type="date" name="ipv2" /></td></tr>
+            <tr><td>6 – 18 months (third dose)</td><td><input type="date" name="ipv3" /></td></tr>
+            <tr><td>4 – 6 years (fourth dose)</td><td><input type="date" name="ipv4" /></td></tr>
+
+            <tr>
+              <td class="vaccine-name">Influenza</td>
+              <td style="font-size:.82rem;">Yearly, starting at 6 months. Two doses given at least four weeks apart are recommended for children who are getting the vaccine for the first time and for some other children in this age group.</td>
+              <td><input type="date" name="flu1" /></td>
+            </tr>
+
+            <tr><td class="vaccine-name" rowspan="2">Measles, Mumps, Rubella</td><td>12 – 15 months (first dose)</td><td><input type="date" name="mmr1" /></td></tr>
+            <tr><td>4 – 6 years (second dose)</td><td><input type="date" name="mmr2" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="2">Varicella (Chickenpox)</td><td>12 – 15 months (first dose)</td><td><input type="date" name="var1" /></td></tr>
+            <tr><td>4 – 6 years (second dose)</td><td><input type="date" name="var2" /></td></tr>
+
+            <tr><td class="vaccine-name" rowspan="2">Hepatitis A</td><td>12 – 23 months (first dose)</td><td><input type="date" name="hepA1" /></td></tr>
+            <tr><td style="font-size:.82rem;">The second dose should be given six to 18 months after the first dose.</td><td><input type="date" name="hepA2" /></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 9 — PHYSICIAN VERIFICATION
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 9 — Physician or Public Health Personnel Verification</h3>
+        <p class="section-note">Signature or stamp of a physician or public health personnel verifying immunization information above.</p>
+        <div class="two-sig">
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Signature</p>
+          </div>
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Date Signed</p>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:10px;">(This section is completed by the physician or public health personnel — not the parent.)</p>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 10 — VARICELLA FOR CHICKENPOX
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 10 — Varicella for Chickenpox</h3>
+        <p class="section-note">Varicella, the vaccine for chickenpox, is not required if your child has had chickenpox disease. If your child has had chickenpox, complete the statement below.</p>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="chickenpoxDate">My child had varicella disease, chickenpox, on or about [date] and does not need varicella vaccine.</label>
+          <input type="date" id="chickenpoxDate" name="chickenpoxDate" />
+        </div>
+        <div class="two-sig">
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Signature</p>
+          </div>
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Date Signed</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 11 — ADDITIONAL IMMUNIZATION INFO
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 11 — Additional Information About Immunizations</h3>
+        <p style="font-size:.9rem;color:var(--text);">
+          For more information about immunizations, visit the Texas Department of State Health Services website at
+          <a href="https://www.dshs.state.tx.us/immunize/public.shtm" target="_blank" rel="noopener">www.dshs.state.tx.us/immunize/public.shtm</a>.
+        </p>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 12 — GANG FREE ZONE
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 12 — Gang Free Zone</h3>
+        <p style="font-size:.9rem;color:var(--text);">
+          Under the Texas Penal Code, any area within 1,000 feet of a child care center is a gang-free zone, where criminal offenses related to organized criminal activity are subject to harsher penalties.
+        </p>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 13 — PRIVACY STATEMENT
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 13 — Privacy Statement</h3>
+        <p style="font-size:.9rem;color:var(--text);">
+          HHSC values your privacy. For more information, read our privacy policy online at
+          <a href="https://hhs.texas.gov/policies-practices-privacy#security" target="_blank" rel="noopener">https://hhs.texas.gov/policies-practices-privacy#security</a>.
+        </p>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           PHOTO / MEDIA CONSENT (Custom)
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Photo &amp; Media Consent</h3>
+        <div class="consent-box">
+          I acknowledge that Center activities may be photographed or video-recorded from time to time and give my consent for my child to appear in digital and printed media used to promote the Center.
+        </div>
+        <div class="radio-group">
+          <label><input type="radio" name="photoConsent" value="I consent" required /> I consent</label>
+          <label><input type="radio" name="photoConsent" value="I do not consent" /> I do not consent</label>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 14 — SIGNATURES
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 14 — Signatures</h3>
+
+        <div class="consent-box">
+          By signing the enrollment form, I acknowledge that I have read and understand the Center's parent handbook and agree to follow all the operational policies stated in the handbook.
+        </div>
+
+        <div class="consent-row">
+          <input type="checkbox" id="handbookAck" name="handbookAck" required />
+          <label for="handbookAck">I have read and agree to the Center's parent handbook and all operational policies. <span class="required">*</span></label>
+        </div>
+
+        <div style="margin-top:24px;">
+          <label>Child's Parent or Legal Guardian Signature <span class="required">*</span></label>
+          <p style="font-size:.8rem;color:var(--muted);margin:4px 0 6px;">Draw your signature below using your mouse or finger.</p>
+          <div class="sig-canvas-wrap">
+            <canvas id="sig-canvas" width="740" height="140"></canvas>
+          </div>
+          <div class="sig-actions">
+            <button type="button" class="btn-clear" id="clearSig">Clear Signature</button>
+          </div>
+          <input type="hidden" id="signatureData" name="signatureData" />
+        </div>
+
+        <div class="form-row" style="margin-top:16px;">
+          <div class="form-group">
+            <label for="signerName">Printed Name <span class="required">*</span></label>
+            <input type="text" id="signerName" name="signerName" required />
+          </div>
+          <div class="form-group">
+            <label for="sigDate">Date Signed <span class="required">*</span></label>
+            <input type="date" id="sigDate" name="sigDate" required />
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
+          <label style="color:var(--muted);font-size:.875rem;">Center Designee Signature (completed by center staff)</label>
+          <div class="two-sig" style="margin-top:8px;">
+            <div>
+              <div class="sig-line"></div>
+              <p class="sig-label">Center Designee Signature</p>
+            </div>
+            <div>
+              <div class="sig-line"></div>
+              <p class="sig-label">Date Signed</p>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Submit Enrollment Form</button>
+      </div>
+
+    </form>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 Divine Kids. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="enrollment.html">Enrollment</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.facebook.com/profile.php?id=61589548977232" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.instagram.com/divine___kids/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="signature.js"></script>
+  <script src="enrollment.js"></script>
+</body>
+</html>

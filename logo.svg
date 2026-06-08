@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- Sun rays -->
+  <circle cx="40" cy="40" r="38" fill="#fff8f0"/>
+  <g stroke="#e8720c" stroke-width="3" stroke-linecap="round">
+    <line x1="40" y1="4"  x2="40" y2="12"/>
+    <line x1="40" y1="68" x2="40" y2="76"/>
+    <line x1="4"  y1="40" x2="12" y2="40"/>
+    <line x1="68" y1="40" x2="76" y2="40"/>
+    <line x1="13" y1="13" x2="19" y2="19"/>
+    <line x1="61" y1="61" x2="67" y2="67"/>
+    <line x1="67" y1="13" x2="61" y2="19"/>
+    <line x1="19" y1="61" x2="13" y2="67"/>
+  </g>
+  <!-- Sun circle -->
+  <circle cx="40" cy="40" r="22" fill="#e8720c"/>
+  <!-- Smiley face -->
+  <circle cx="34" cy="36" r="2.5" fill="#fff"/>
+  <circle cx="46" cy="36" r="2.5" fill="#fff"/>
+  <path d="M33 44 Q40 51 47 44" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Star sparkle -->
+  <path d="M62 18 L63.5 21.5 L67 23 L63.5 24.5 L62 28 L60.5 24.5 L57 23 L60.5 21.5 Z" fill="#ffb347"/>
+</svg>

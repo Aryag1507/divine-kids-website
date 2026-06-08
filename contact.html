@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — Divine Kids</title>
+  <link rel="icon" type="image/png" href="logo-removebg.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-spacer"></div><a class="logo" href="index.html">
+        <img class="logo-icon" src="logo-removebg.png" alt="Divine Kids logo" />
+        <div class="logo-text">
+          <h1>Divine Kids</h1>
+        </div>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="enrollment.html">Enrollment Form</a>
+        <a href="contact.html" class="active">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <h2><span>Contact</span> Us</h2>
+    <p>We'd love to hear from you. Send us a message and we'll get back to you soon.</p>
+  </div>
+
+  <div class="contact-wrapper">
+
+    <!-- Contact Form -->
+    <div class="contact-form-card">
+      <h3>Send a Message</h3>
+
+      <div id="contact-success" class="success-banner">
+        Thank you for reaching out! We'll be in touch with you shortly.
+      </div>
+
+      <form id="contactForm" novalidate>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="contactName">Your Name <span class="required">*</span></label>
+          <input type="text" id="contactName" name="contactName" required placeholder="Full name" />
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="contactEmail">Email Address <span class="required">*</span></label>
+          <input type="email" id="contactEmail" name="contactEmail" required placeholder="you@example.com" />
+        </div>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label for="contactPhone">Phone Number</label>
+          <input type="tel" id="contactPhone" name="contactPhone" placeholder="(555) 000-0000" />
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label for="contactMessage">Your Question or Message <span class="required">*</span></label>
+          <textarea id="contactMessage" name="contactMessage" required placeholder="How can we help you?" style="min-height:120px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-submit">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Info & Social -->
+    <div class="contact-info-card">
+      <h3>Connect With Us</h3>
+
+      <div class="contact-detail">
+        <span class="icon">📞</span>
+        <div>
+          <strong>Phone / WhatsApp</strong>
+          <p><a href="tel:8327266572">832-726-6572</a></p>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <span class="icon">✉️</span>
+        <div>
+          <strong>Email</strong>
+          <p><a href="mailto:Divinekids4soul@gmail.com">Divinekids4soul@gmail.com</a></p>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <span class="icon">📋</span>
+        <div>
+          <strong>Enrollment</strong>
+          <p><a href="enrollment.html">Fill out our enrollment form</a> to get started.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px;padding-top:20px;border-top:2px solid var(--border);">Follow Us</h3>
+      <p style="font-size:.88rem;color:var(--muted);margin:8px 0 16px;">Stay connected and see what's happening at Divine Kids.</p>
+
+      <div class="social-links">
+        <a class="social-link"
+           href="https://www.facebook.com/profile.php?id=61589548977232"
+           target="_blank"
+           rel="noopener noreferrer">
+          <span class="social-icon">📘</span>
+          <div>
+            <strong>Facebook</strong>
+            <div style="font-size:.8rem;color:var(--muted);">Divine Kids</div>
+          </div>
+        </a>
+
+        <a class="social-link"
+           href="https://www.instagram.com/divine___kids/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <span class="social-icon">📸</span>
+          <div>
+            <strong>Instagram</strong>
+            <div style="font-size:.8rem;color:var(--muted);">@divine___kids</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <p>&copy; 2026 Divine Kids. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="enrollment.html">Enrollment</a>
+        <a href="contact.html">Contact</a>
+        <a href="https://www.facebook.com/profile.php?id=61589548977232" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.instagram.com/divine___kids/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="contact.js"></script>
+</body>
+</html>
