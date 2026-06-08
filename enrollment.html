@@ -103,15 +103,15 @@
 
         <div class="form-row">
           <div class="form-group full">
-            <label for="childAddress">Child's Home Street Address, City, State and ZIP Code</label>
-            <input type="text" id="childAddress" name="childAddress" placeholder="Street, City, State, ZIP" />
+            <label for="childAddress">Child's Home Street Address, City, State and ZIP Code <span class="required">*</span></label>
+            <input type="text" id="childAddress" name="childAddress" placeholder="Street, City, State, ZIP" required />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="dateAdmission">Date of Admission</label>
-            <input type="date" id="dateAdmission" name="dateAdmission" />
+            <label for="dateAdmission">Date of Admission <span class="required">*</span></label>
+            <input type="date" id="dateAdmission" name="dateAdmission" required />
           </div>
           <div class="form-group">
             <label for="dateWithdrawal">Date of Withdrawal</label>
@@ -139,8 +139,8 @@
             <input type="email" id="parent1Email" name="parent1Email" required placeholder="parent@email.com" />
           </div>
           <div class="form-group">
-            <label for="parent1Employer">Employer</label>
-            <input type="text" id="parent1Employer" name="parent1Employer" />
+            <label for="parent1Employer">Employer <span class="required">*</span></label>
+            <input type="text" id="parent1Employer" name="parent1Employer" required />
           </div>
         </div>
 
@@ -148,8 +148,8 @@
         <h4>Parent or Guardian 2</h4>
         <div class="form-row">
           <div class="form-group">
-            <label for="parent2Name">Name of Parent or Guardian 2</label>
-            <input type="text" id="parent2Name" name="parent2Name" />
+            <label for="parent2Name">Name of Parent or Guardian 2 <span class="required">*</span></label>
+            <input type="text" id="parent2Name" name="parent2Name" required />
           </div>
         </div>
         <div class="form-row">
@@ -202,8 +202,8 @@
             <input type="text" id="ec1Name" name="ec1Name" required />
           </div>
           <div class="form-group">
-            <label for="ec1Relation">Relationship</label>
-            <input type="text" id="ec1Relation" name="ec1Relation" />
+            <label for="ec1Relation">Relationship <span class="required">*</span></label>
+            <input type="text" id="ec1Relation" name="ec1Relation" required />
           </div>
           <div class="form-group">
             <label for="ec1Phone">Area Code and Phone No. <span class="required">*</span></label>
@@ -255,43 +255,6 @@
       </div>
 
       <!-- ══════════════════════════════════════════
-           SECTION 3A — MEDICAL INSURANCE (Custom)
-      ══════════════════════════════════════════ -->
-      <div class="form-section">
-        <h3>Section 1A — Child's Medical Insurance Information</h3>
-        <p class="section-note">
-          The Center does not carry liability insurance; therefore, the child's medical insurance is required for medical emergencies when parents or an alternative contact cannot be reached, and it is necessary for taking the child to a medical facility.
-        </p>
-        <div class="form-group" style="margin-bottom:16px;">
-          <label>Medical Insurance Card Attached: <span class="required">*</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="insuranceCardAttached" value="Yes" required /> Yes</label>
-            <label><input type="radio" name="insuranceCardAttached" value="No" /> No</label>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="insuranceCompany">Insurance Company Name</label>
-            <input type="text" id="insuranceCompany" name="insuranceCompany" />
-          </div>
-          <div class="form-group">
-            <label for="insurancePolicyNum">Policy / Member ID Number</label>
-            <input type="text" id="insurancePolicyNum" name="insurancePolicyNum" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="insuranceHolder">Policy Holder Name</label>
-            <input type="text" id="insuranceHolder" name="insuranceHolder" />
-          </div>
-          <div class="form-group">
-            <label for="insurancePhone">Insurance Contact Phone</label>
-            <input type="tel" id="insurancePhone" name="insurancePhone" />
-          </div>
-        </div>
-      </div>
-
-      <!-- ══════════════════════════════════════════
            SECTION 2 — CONSENT INFORMATION
       ══════════════════════════════════════════ -->
       <div class="form-section">
@@ -305,12 +268,13 @@
           <label><input type="checkbox" name="transportFieldTrips" value="On field trips" /> On field trips</label>
           <label><input type="checkbox" name="transportHome" value="To and from home" /> To and from home</label>
           <label><input type="checkbox" name="transportSchool" value="To and from school" /> To and from school</label>
+          <label><input type="checkbox" name="transportNone" value="None of the above" /> None of the above</label>
         </div>
 
         <!-- 2.2 Field Trips -->
-        <h4>2. Field Trips</h4>
+        <h4>2. Field Trips <span class="required">*</span></h4>
         <div class="radio-group" style="flex-direction:column;gap:8px;">
-          <label><input type="radio" name="fieldTrips" value="I give consent for my child to participate in field trips." /> I give consent for my child to participate in field trips.</label>
+          <label><input type="radio" name="fieldTrips" value="I give consent for my child to participate in field trips." required /> I give consent for my child to participate in field trips.</label>
           <label><input type="radio" name="fieldTrips" value="I do not give consent for my child to participate in field trips." /> I do not give consent for my child to participate in field trips.</label>
         </div>
         <div class="form-group" style="margin-top:10px;">
@@ -327,19 +291,20 @@
           <label><input type="checkbox" name="waterWading" value="Wading pools" /> Wading pools</label>
           <label><input type="checkbox" name="waterSwimming" value="Swimming pools" /> Swimming pools</label>
           <label><input type="checkbox" name="waterAquatic" value="Aquatic playgrounds" /> Aquatic playgrounds</label>
+          <label><input type="checkbox" name="waterNone" value="None of the above" /> None of the above</label>
         </div>
         <div class="form-group" style="margin-top:12px;">
-          <label>1. Is your child a competent swimmer?</label>
+          <label>Is your child a competent swimmer? <span class="required">*</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="competentSwimmer" value="Yes" /> Yes</label>
+            <label><input type="radio" name="competentSwimmer" value="Yes" required /> Yes</label>
             <label><input type="radio" name="competentSwimmer" value="No" /> No</label>
           </div>
           <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">If no, your child is required to wear a life jacket while in or near a swimming pool.</p>
         </div>
         <div class="form-group" style="margin-top:10px;">
-          <label>2. Does your child have any physical, health, behavioral or other condition that would put them at risk while swimming?</label>
+          <label>Does your child have any physical, health, behavioral or other condition that would put them at risk while swimming? <span class="required">*</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="swimmingRisk" value="Yes" /> Yes</label>
+            <label><input type="radio" name="swimmingRisk" value="Yes" required /> Yes</label>
             <label><input type="radio" name="swimmingRisk" value="No" /> No</label>
           </div>
           <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">If yes, your child is required to wear a life jacket while in or near a swimming pool.</p>
@@ -382,7 +347,7 @@
         </div>
 
         <!-- 2.6 Days and Times in Care -->
-        <h4>6. Days and Times in Care</h4>
+        <h4>6. Days and Times in Care <span class="required">*</span></h4>
         <p style="font-size:.875rem;margin-bottom:4px;">My child is normally in care on the following days and times.</p>
         <table class="schedule-table">
           <thead>
@@ -423,10 +388,10 @@
         </table>
 
         <!-- 2.7 Receipt of Parent's Rights -->
-        <h4>7. Receipt of Parent's Rights</h4>
+        <h4>7. Receipt of Parent's Rights <span class="required">*</span></h4>
         <div class="consent-row">
-          <input type="checkbox" id="parentRightsAck" name="parentRightsAck" />
-          <label for="parentRightsAck">I acknowledge I have received a written copy of my rights as a parent or guardian of a child enrolled at this facility.</label>
+          <input type="checkbox" id="parentRightsAck" name="parentRightsAck" required />
+          <label for="parentRightsAck">I acknowledge I have received a written copy of my rights as a parent or guardian of a child enrolled at this facility. <span class="required">*</span></label>
         </div>
 
         <!-- 2.8 Child's Special Care Needs -->
@@ -544,8 +509,24 @@
         </div>
 
         <div class="consent-row" style="margin-top:8px;">
-          <input type="checkbox" id="emergencyMedConsent" name="emergencyMedConsent" />
-          <label for="emergencyMedConsent">I give consent for the facility to secure any and all necessary emergency medical care for my child.</label>
+          <input type="checkbox" id="emergencyMedConsent" name="emergencyMedConsent" required />
+          <label for="emergencyMedConsent">I give consent for the facility to secure any and all necessary emergency medical care for my child. <span class="required">*</span></label>
+        </div>
+<div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-sec3" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-sec3-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-sec3-data" name="sig-sec3-data" />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigSec3Date">Date Signed</label>
+            <input type="date" id="sigSec3Date" name="sigSec3Date" />
+          </div>
         </div>
       </div>
 
@@ -573,19 +554,35 @@
         <h3>Section 5 — Vision Exam Results</h3>
         <div class="form-row">
           <div class="form-group">
-            <label for="visionRightEye">Right Eye 20/</label>
-            <input type="text" id="visionRightEye" name="visionRightEye" placeholder="e.g. 20" />
+            <label for="visionRightEye">Right Eye 20/ <span class="required">*</span></label>
+            <input type="text" id="visionRightEye" name="visionRightEye" placeholder="e.g. 20" required />
           </div>
           <div class="form-group">
-            <label for="visionLeftEye">Left Eye 20/</label>
-            <input type="text" id="visionLeftEye" name="visionLeftEye" placeholder="e.g. 20" />
+            <label for="visionLeftEye">Left Eye 20/ <span class="required">*</span></label>
+            <input type="text" id="visionLeftEye" name="visionLeftEye" placeholder="e.g. 20" required />
           </div>
           <div class="form-group">
-            <label>Result</label>
+            <label>Result <span class="required">*</span></label>
             <div class="radio-group">
-              <label><input type="radio" name="visionResult" value="Pass" /> Pass</label>
+              <label><input type="radio" name="visionResult" value="Pass" required /> Pass</label>
               <label><input type="radio" name="visionResult" value="Fail" /> Fail</label>
             </div>
+          </div>
+        </div>
+<div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-vision" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-vision-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-vision-data" name="sig-vision-data" />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigVisionDate">Date Signed</label>
+            <input type="date" id="sigVisionDate" name="sigVisionDate" />
           </div>
         </div>
       </div>
@@ -632,6 +629,22 @@
             </tr>
           </tbody>
         </table>
+<div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-hearing" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-hearing-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-hearing-data" name="sig-hearing-data" />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigHearingDate">Date Signed</label>
+            <input type="date" id="sigHearingDate" name="sigHearingDate" />
+          </div>
+        </div>
       </div>
 
       <!-- ══════════════════════════════════════════
@@ -668,6 +681,23 @@
           <div class="form-group full">
             <label for="hcpAddress">If selected, Health Care Professional Street Address, City, State and ZIP Code</label>
             <input type="text" id="hcpAddress" name="hcpAddress" />
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:16px;">(Health Care Professional signature is obtained in person at the center.)</p>
+        <div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-sec7-parent" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-sec7-parent-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-sec7-parent-data" name="sig-sec7-parent-data" />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigSec7ParentDate">Date Signed</label>
+            <input type="date" id="sigSec7ParentDate" name="sigSec7ParentDate" />
           </div>
         </div>
       </div>
@@ -736,17 +766,7 @@
       <div class="form-section">
         <h3>Section 9 — Physician or Public Health Personnel Verification</h3>
         <p class="section-note">Signature or stamp of a physician or public health personnel verifying immunization information above.</p>
-        <div class="two-sig">
-          <div>
-            <div class="sig-line"></div>
-            <p class="sig-label">Signature</p>
-          </div>
-          <div>
-            <div class="sig-line"></div>
-            <p class="sig-label">Date Signed</p>
-          </div>
-        </div>
-        <p style="font-size:.8rem;color:var(--muted);margin-top:10px;">(This section is completed by the physician or public health personnel — not the parent.)</p>
+        <p style="font-size:.8rem;color:var(--muted);margin-top:10px;">(This section is completed by the physician or public health personnel — not the parent. Signed in person.)</p>
       </div>
 
       <!-- ══════════════════════════════════════════
@@ -759,14 +779,20 @@
           <label for="chickenpoxDate">My child had varicella disease, chickenpox, on or about [date] and does not need varicella vaccine.</label>
           <input type="date" id="chickenpoxDate" name="chickenpoxDate" />
         </div>
-        <div class="two-sig">
-          <div>
-            <div class="sig-line"></div>
-            <p class="sig-label">Signature</p>
+<div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-varicella" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-varicella-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-varicella-data" name="sig-varicella-data" />
           </div>
-          <div>
-            <div class="sig-line"></div>
-            <p class="sig-label">Date Signed</p>
+          <div class="sig-date-field">
+            <label for="sigVaricellaDate">Date Signed</label>
+            <input type="date" id="sigVaricellaDate" name="sigVaricellaDate" />
           </div>
         </div>
       </div>
@@ -811,9 +837,26 @@
         <div class="consent-box">
           I acknowledge that Center activities may be photographed or video-recorded from time to time and give my consent for my child to appear in digital and printed media used to promote the Center.
         </div>
+        <p style="font-size:.85rem;font-weight:600;margin-bottom:6px;">Please select one: <span class="required">*</span></p>
         <div class="radio-group">
           <label><input type="radio" name="photoConsent" value="I consent" required /> I consent</label>
           <label><input type="radio" name="photoConsent" value="I do not consent" /> I do not consent</label>
+        </div>
+<div class="sig-pair">
+          <div class="sig-pad-wrap">
+            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
+            <div class="sig-canvas-wrap">
+              <canvas id="sig-photo" class="sig-pad" data-height="100"></canvas>
+            </div>
+            <div class="sig-actions">
+              <button type="button" class="btn-clear" id="sig-photo-clear">Clear</button>
+            </div>
+            <input type="hidden" id="sig-photo-data" name="sig-photo-data" />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigPhotoDate">Date Signed</label>
+            <input type="date" id="sigPhotoDate" name="sigPhotoDate" />
+          </div>
         </div>
       </div>
 
@@ -857,16 +900,7 @@
 
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
           <label style="color:var(--muted);font-size:.875rem;">Center Designee Signature (completed by center staff)</label>
-          <div class="two-sig" style="margin-top:8px;">
-            <div>
-              <div class="sig-line"></div>
-              <p class="sig-label">Center Designee Signature</p>
-            </div>
-            <div>
-              <div class="sig-line"></div>
-              <p class="sig-label">Date Signed</p>
-            </div>
-          </div>
+          <p style="font-size:.8rem;color:var(--muted);margin-top:8px;">(Center Designee signature is completed by staff at the center.)</p>
         </div>
 
         <button type="submit" class="btn btn-submit">Submit Enrollment Form</button>

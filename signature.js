@@ -1,23 +1,21 @@
-// Signature pad logic
-(function () {
-  const canvas = document.getElementById('sig-canvas');
+// Initializes a signature pad on a given canvas element
+function initSignaturePad(canvas, hiddenInput, clearBtn) {
   if (!canvas) return;
-
   const ctx = canvas.getContext('2d');
   let drawing = false;
-  let hasSignature = false;
 
   function resizeCanvas() {
     const wrapper = canvas.parentElement;
-    const w = wrapper.clientWidth;
     const ratio = window.devicePixelRatio || 1;
+    const w = wrapper.clientWidth;
+    const h = parseInt(canvas.dataset.height || '120');
     canvas.width = w * ratio;
-    canvas.height = 140 * ratio;
+    canvas.height = h * ratio;
     canvas.style.width = w + 'px';
-    canvas.style.height = '140px';
+    canvas.style.height = h + 'px';
     ctx.scale(ratio, ratio);
     ctx.strokeStyle = '#1a1a1a';
-    ctx.lineWidth = 2.2;
+    ctx.lineWidth = 2;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
   }
@@ -45,17 +43,13 @@
     const { x, y } = getPos(e);
     ctx.lineTo(x, y);
     ctx.stroke();
-    hasSignature = true;
+    if (hiddenInput) hiddenInput.value = canvas.toDataURL('image/png');
   }
 
   function stop(e) {
     if (!drawing) return;
-    e.preventDefault();
     drawing = false;
     ctx.beginPath();
-    if (hasSignature) {
-      document.getElementById('signatureData').value = canvas.toDataURL('image/png');
-    }
   }
 
   canvas.addEventListener('mousedown', start);
@@ -66,10 +60,21 @@
   canvas.addEventListener('touchmove', draw, { passive: false });
   canvas.addEventListener('touchend', stop, { passive: false });
 
-  document.getElementById('clearSig').addEventListener('click', function () {
-    const ratio = window.devicePixelRatio || 1;
-    ctx.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
-    hasSignature = false;
-    document.getElementById('signatureData').value = '';
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function () {
+      const ratio = window.devicePixelRatio || 1;
+      ctx.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+      if (hiddenInput) hiddenInput.value = '';
+    });
+  }
+}
+
+// Initialize all signature pads on the page
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('canvas.sig-pad').forEach(function (canvas) {
+    const id = canvas.id;
+    const hiddenInput = id ? document.getElementById(id + '-data') : null;
+    const clearBtn = id ? document.getElementById(id + '-clear') : null;
+    initSignaturePad(canvas, hiddenInput, clearBtn);
   });
-})();
+});

@@ -288,6 +288,29 @@ input[type="radio"], input[type="checkbox"] {
 }
 .consent-row input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
 
+/* Mini signature pad (used in multiple sections) */
+.sig-pad-wrap {
+  margin-top: 16px;
+}
+.sig-pad-wrap .sig-pad-label {
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.sig-pad-wrap .sig-canvas-wrap {
+  margin-top: 4px;
+}
+.sig-pair {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-top: 16px;
+  align-items: end;
+}
+@media(max-width:500px) { .sig-pair { grid-template-columns: 1fr; } }
+.sig-date-field label { font-size:.875rem; font-weight:600; color:var(--text); }
+
 /* Signature */
 .sig-canvas-wrap {
   border: 1.5px solid #e0cdb8;
