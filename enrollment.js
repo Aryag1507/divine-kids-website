@@ -32,9 +32,8 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     });
 
     if (res.ok) {
-      document.getElementById('success-banner').style.display = 'block';
       form.reset();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.href = 'payment.html';
     } else {
       const body = await res.json().catch(() => ({}));
       alert('There was a problem submitting the form: ' + (body.message || 'Please try again or email us directly.'));
