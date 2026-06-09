@@ -72,11 +72,7 @@
         <div class="form-row">
           <div class="form-group">
             <label for="operationName">Operation's Name</label>
-            <input type="text" id="operationName" name="operationName" value="Divine Kids" />
-          </div>
-          <div class="form-group">
-            <label for="directorName">Director's Name</label>
-            <input type="text" id="directorName" name="directorName" />
+            <input type="text" id="operationName" name="operationName" value="Divine Kids" readonly style="background:#f5f5f5;color:var(--muted);cursor:not-allowed;" />
           </div>
         </div>
 
@@ -638,7 +634,7 @@
               <td><input type="text" name="hearingRight4000" /></td>
               <td>
                 <div class="radio-group">
-                  <label><input type="radio" name="hearingRightResult" value="Pass" /> Pass</label>
+                  <label><input type="radio" name="hearingRightResult" value="Pass" required /> Pass</label>
                   <label><input type="radio" name="hearingRightResult" value="Fail" /> Fail</label>
                 </div>
               </td>
@@ -650,7 +646,7 @@
               <td><input type="text" name="hearingLeft4000" /></td>
               <td>
                 <div class="radio-group">
-                  <label><input type="radio" name="hearingLeftResult" value="Pass" /> Pass</label>
+                  <label><input type="radio" name="hearingLeftResult" value="Pass" required /> Pass</label>
                   <label><input type="radio" name="hearingLeftResult" value="Fail" /> Fail</label>
                 </div>
               </td>
@@ -659,8 +655,8 @@
         </table>
 <div class="sig-pair">
           <div class="form-group">
-            <label for="nameHearing">Printed Name (print full name)</label>
-            <input type="text" id="nameHearing" name="nameHearing" placeholder="Type full name" />
+            <label for="nameHearing">Printed Name <span class="required">*</span></label>
+            <input type="text" id="nameHearing" name="nameHearing" placeholder="Type full name" required />
           </div>
           <div class="sig-date-field">
             <label for="sigHearingDate">Date</label>
@@ -677,7 +673,7 @@
         <p class="section-note">If your child does not attend pre-kindergarten or school away from the program, one of the following must be presented when your child is admitted to the program or within one week of admission.</p>
         <div class="radio-group" style="flex-direction:column;gap:12px;">
           <label style="align-items:flex-start;">
-            <input type="radio" name="admissionReq" value="signed_copy_attached" style="margin-top:3px;flex-shrink:0;" />
+            <input type="radio" name="admissionReq" value="signed_copy_attached" required style="margin-top:3px;flex-shrink:0;" />
             <span>A signed and dated copy of a health care professional's statement is attached, which states that the healthcare professional has examined the above named child within the past year and finds the child is able to take part in the program.</span>
           </label>
           <label style="align-items:flex-start;">
@@ -695,8 +691,8 @@
         </div>
         <div class="sig-pair">
           <div class="form-group">
-            <label for="nameSec7Parent">Parent or Legal Guardian (print full name) (print full name)</label>
-            <input type="text" id="nameSec7Parent" name="nameSec7Parent" placeholder="Type full name" />
+            <label for="nameSec7Parent">Parent or Legal Guardian <span class="required">*</span></label>
+            <input type="text" id="nameSec7Parent" name="nameSec7Parent" placeholder="Type full name" required />
           </div>
           <div class="sig-date-field">
             <label for="sigSec7ParentDate">Date</label>
@@ -782,9 +778,11 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label for="vaccinationRecordsFile">Attach Vaccination Records (if available)</label>
-          <input type="file" id="vaccinationRecordsFile" name="vaccinationRecordsFile" accept="image/*,.pdf" style="margin-top:4px;" />
+        <div class="form-row" style="margin-top:14px;">
+          <div class="form-group">
+            <label for="vaccinationRecordsFile">Attach Vaccination Records (if attaching now)</label>
+            <input type="file" id="vaccinationRecordsFile" name="vaccinationRecordsFile" accept="image/*,.pdf" style="margin-top:4px;" />
+          </div>
         </div>
       </div>
 
@@ -800,8 +798,8 @@
         </div>
 <div class="sig-pair">
           <div class="form-group">
-            <label for="nameVaricella">Printed Name (print full name)</label>
-            <input type="text" id="nameVaricella" name="nameVaricella" placeholder="Type full name" />
+            <label for="nameVaricella">Printed Name <span class="required">*</span></label>
+            <input type="text" id="nameVaricella" name="nameVaricella" placeholder="Type full name" required />
           </div>
           <div class="sig-date-field">
             <label for="sigVaricellaDate">Date</label>
