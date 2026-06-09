@@ -23,12 +23,12 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     return;
   }
   if (!document.getElementById('handbookAck').checked) {
-    alert('Please acknowledge the parent handbook before submitting.');
+    dkAlert('Please acknowledge the parent handbook before submitting.');
     return;
   }
   const signerName = document.getElementById('signerName').value.trim();
   if (!signerName) {
-    alert('Please type your full name as your electronic signature before submitting.');
+    dkAlert('Please type your full name as your electronic signature before submitting.');
     return;
   }
 
@@ -63,10 +63,10 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
       window.location.href = 'payment.html';
     } else {
       const body = await res.json().catch(() => ({}));
-      alert('There was a problem submitting the form: ' + (body.message || 'Please try again or email us directly.'));
+      dkAlert('There was a problem submitting the form: ' + (body.message || 'Please try again or email us directly.'));
     }
   } catch (err) {
-    alert('Network error. Please check your connection and try again.');
+    dkAlert('Network error. Please check your connection and try again.');
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Enrollment Form';

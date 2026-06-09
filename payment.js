@@ -27,7 +27,7 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   const anyChecked = ['payAdmissionZelle','payFirstWeekZelle','payAdmissionCash','payFirstWeekCash']
     .some(name => form.elements[name] && form.elements[name].checked);
   if (!anyChecked) {
-    alert('Please select at least one payment option.');
+    dkAlert('Please select at least one payment option.');
     return;
   }
 
@@ -38,12 +38,12 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   const firstWeekZelleFile    = document.getElementById('firstWeekZelleFile');
 
   if (admissionZelleChecked && (!admissionZelleFile || !admissionZelleFile.files.length)) {
-    alert('Please attach your Zelle confirmation for the admission fee payment.');
+    dkAlert('Please attach your Zelle confirmation for the admission fee payment.');
     admissionZelleFile && admissionZelleFile.focus();
     return;
   }
   if (firstWeekZelleChecked && (!firstWeekZelleFile || !firstWeekZelleFile.files.length)) {
-    alert('Please attach your Zelle confirmation for the first week fee payment.');
+    dkAlert('Please attach your Zelle confirmation for the first week fee payment.');
     firstWeekZelleFile && firstWeekZelleFile.focus();
     return;
   }
@@ -85,10 +85,10 @@ document.getElementById('paymentForm').addEventListener('submit', async function
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const body = await res.json().catch(() => ({}));
-      alert('There was a problem submitting: ' + (body.message || 'Please try again or email us directly.'));
+      dkAlert('There was a problem submitting: ' + (body.message || 'Please try again or email us directly.'));
     }
   } catch (err) {
-    alert('Network error. Please check your connection and try again.');
+    dkAlert('Network error. Please check your connection and try again.');
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Payment Information';
