@@ -7,20 +7,11 @@ exports.handler = async function (event) {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  // Parse multipart form data (Netlify passes it as body)
-  // For file uploads we rely on the text fields; attachments are noted
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
-    // multipart — parse manually from text
-    body = {};
-    const raw = event.body || '';
-    const pairs = raw.split('&');
-    pairs.forEach(p => {
-      const [k, v] = p.split('=');
-      if (k) body[decodeURIComponent(k)] = decodeURIComponent((v || '').replace(/\+/g, ' '));
-    });
+    return { statusCode: 400, body: JSON.stringify({ message: 'Invalid JSON' }) };
   }
 
   const childName   = body.paymentChildName || '—';
@@ -70,12 +61,30 @@ exports.handler = async function (event) {
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
   });
 
+  // Build attachments from base64 Zelle confirmation files
+  const attachments = [];
+  const zelleFiles = {
+    admissionZelleFile: 'Admission-Fee-Zelle-Confirmation',
+    firstWeekZelleFile: 'First-Week-Fee-Zelle-Confirmation',
+  };
+  for (const [field, label] of Object.entries(zelleFiles)) {
+    const f = body[field];
+    if (f && f.data) {
+      attachments.push({
+        filename: f.name || `${label}.pdf`,
+        content:  Buffer.from(f.data, 'base64'),
+        contentType: f.type || 'application/octet-stream',
+      });
+    }
+  }
+
   try {
     await transporter.sendMail({
       from: `"Divine Kids" <${process.env.SMTP_USER}>`,
       to: CENTER_EMAIL,
       subject: `[PAYMENT] ${childName} — Payment Information Submitted`,
       html: htmlCenter,
+      attachments,
     });
     if (payerEmail) {
       await transporter.sendMail({
@@ -83,6 +92,7 @@ exports.handler = async function (event) {
         to: payerEmail,
         subject: 'Payment Information Received — Divine Kids',
         html: htmlParent,
+        attachments,
       });
     }
   } catch (err) {

@@ -1,9 +1,23 @@
-// Enrollment form submission
+// Convert a file input to base64
+function fileToBase64(input) {
+  return new Promise((resolve) => {
+    const file = input.files && input.files[0];
+    if (!file) return resolve(null);
+    const reader = new FileReader();
+    reader.onload = () => resolve({
+      name: file.name,
+      type: file.type,
+      data: reader.result.split(',')[1], // base64 only
+    });
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
 document.getElementById('enrollmentForm').addEventListener('submit', async function (e) {
   e.preventDefault();
   const form = e.target;
 
-  // Basic validation
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
@@ -22,7 +36,18 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting…';
 
+  // Collect text fields
   const data = Object.fromEntries(new FormData(form).entries());
+
+  // Collect file attachments as base64
+  const fileFields = ['insuranceCardFile', 'affidavitFile', 'admissionDocFile', 'vaccinationRecordsFile'];
+  for (const fieldName of fileFields) {
+    const input = document.getElementById(fieldName) || form.elements[fieldName];
+    if (input) {
+      const result = await fileToBase64(input);
+      if (result) data[fieldName] = result;
+    }
+  }
 
   try {
     const res = await fetch('/.netlify/functions/send-enrollment', {

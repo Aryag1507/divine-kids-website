@@ -237,19 +237,34 @@ exports.handler = async function (event) {
   const childName = val(data.childFullName);
   const subject = `Enrollment Form — ${childName}`;
 
+  // Build file attachments from base64 fields
+  const fileFieldLabels = {
+    insuranceCardFile:      'Insurance Card',
+    affidavitFile:          'Affidavit',
+    admissionDocFile:       'Admission Document',
+    vaccinationRecordsFile: 'Vaccination Records',
+  };
+  const attachments = [];
+  for (const [field, label] of Object.entries(fileFieldLabels)) {
+    const f = data[field];
+    if (f && f.data) {
+      attachments.push({
+        filename: f.name || `${label}.pdf`,
+        content:  Buffer.from(f.data, 'base64'),
+        contentType: f.type || 'application/octet-stream',
+      });
+    }
+  }
+
+  const mailBase = {
+    from: `"Divine Kids" <${process.env.SMTP_USER}>`,
+    subject,
+    attachments,
+  };
+
   try {
-    await transporter.sendMail({
-      from: `"Divine Kids" <${process.env.SMTP_USER}>`,
-      to: parentEmail,
-      subject,
-      html: buildHtml(data, false),
-    });
-    await transporter.sendMail({
-      from: `"Divine Kids" <${process.env.SMTP_USER}>`,
-      to: CENTER_EMAIL,
-      subject: `[NEW ENROLLMENT] ${subject}`,
-      html: buildHtml(data, true),
-    });
+    await transporter.sendMail({ ...mailBase, to: parentEmail, html: buildHtml(data, false) });
+    await transporter.sendMail({ ...mailBase, to: CENTER_EMAIL, subject: `[NEW ENROLLMENT] ${subject}`, html: buildHtml(data, true) });
   } catch (err) {
     console.error('Email send error:', err);
     return { statusCode: 500, body: JSON.stringify({ message: 'Failed to send email' }) };
