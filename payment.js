@@ -1,4 +1,4 @@
-// Convert a file input to base64, compressing images to stay under size limits
+// Compress images and convert to base64
 function fileToBase64(input) {
   return new Promise((resolve) => {
     const file = input.files && input.files[0];
@@ -71,16 +71,16 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting…';
 
-  // Collect text fields
+  // Payment form fields
   const data = Object.fromEntries(new FormData(form).entries());
 
-  // Pull enrollment data saved from the previous step
+  // Pull full enrollment data (text + files) from sessionStorage
   try {
     const saved = sessionStorage.getItem('enrollmentData');
     if (saved) data.enrollmentData = JSON.parse(saved);
   } catch (_) {}
 
-  // Attach Zelle confirmation files as base64
+  // Compress and attach Zelle confirmation files
   if (admissionZelleChecked && admissionZelleFile) {
     const result = await fileToBase64(admissionZelleFile);
     if (result) data['admissionZelleFile'] = result;

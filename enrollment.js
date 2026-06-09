@@ -1,10 +1,9 @@
-// Convert a file input to base64, compressing images to stay under size limits
+// Compress images and convert to base64
 function fileToBase64(input) {
   return new Promise((resolve) => {
     const file = input.files && input.files[0];
     if (!file) return resolve(null);
 
-    // For PDFs, just read directly
     if (file.type === 'application/pdf') {
       const reader = new FileReader();
       reader.onload = () => resolve({ name: file.name, type: file.type, data: reader.result.split(',')[1] });
@@ -13,7 +12,6 @@ function fileToBase64(input) {
       return;
     }
 
-    // For images, compress via canvas (max 1000px wide, 70% quality)
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();
@@ -55,12 +53,12 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
 
   const submitBtn = form.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Submitting…';
+  submitBtn.textContent = 'Saving…';
 
-  // Collect text fields
+  // Collect all text fields
   const data = Object.fromEntries(new FormData(form).entries());
 
-  // Collect file attachments as base64
+  // Collect and compress all file attachments
   const fileFields = ['insuranceCardFile', 'affidavitFile', 'admissionDocFile', 'vaccinationRecordsFile'];
   for (const fieldName of fileFields) {
     const input = document.getElementById(fieldName) || form.elements[fieldName];
@@ -70,30 +68,20 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     }
   }
 
+  // Save everything to sessionStorage — no email sent yet
+  // Payment page will send ONE combined email with everything
   try {
-    const res = await fetch('/.netlify/functions/send-enrollment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (res.ok) {
-      // Save enrollment text data for the payment page (strip file attachments to keep payload small)
-      const fileFields = ['insuranceCardFile','affidavitFile','admissionDocFile','vaccinationRecordsFile'];
-      const textData = Object.fromEntries(
-        Object.entries(data).filter(([k]) => !fileFields.includes(k))
-      );
-      sessionStorage.setItem('enrollmentData', JSON.stringify(textData));
-      form.reset();
-      window.location.href = 'payment.html';
-    } else {
-      const body = await res.json().catch(() => ({}));
-      dkAlert('There was a problem submitting the form: ' + (body.message || 'Please try again or email us directly.'));
-    }
+    sessionStorage.setItem('enrollmentData', JSON.stringify(data));
   } catch (err) {
-    dkAlert('Network error. Please check your connection and try again.');
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Submit Enrollment Form';
+    // sessionStorage full (files too large) — save text only
+    const textOnly = Object.fromEntries(
+      Object.entries(data).filter(([k]) => !fileFields.includes(k))
+    );
+    sessionStorage.setItem('enrollmentData', JSON.stringify(textOnly));
   }
+
+  form.reset();
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Submit Enrollment Form';
+  window.location.href = 'payment.html';
 });
