@@ -263,8 +263,8 @@ exports.handler = async function (event) {
   };
 
   try {
+    // Only email the parent — Divine Kids will receive one combined email after payment is submitted
     await transporter.sendMail({ ...mailBase, to: parentEmail, html: buildHtml(data, false) });
-    await transporter.sendMail({ ...mailBase, to: CENTER_EMAIL, subject: `[NEW ENROLLMENT] ${subject}`, html: buildHtml(data, true) });
   } catch (err) {
     console.error('Email send error:', err);
     return { statusCode: 500, body: JSON.stringify({ message: 'Failed to send email' }) };

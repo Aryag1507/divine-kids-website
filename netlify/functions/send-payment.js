@@ -28,15 +28,17 @@ exports.handler = async function (event) {
   const htmlCenter = `
     <div style="font-family:Arial,sans-serif;max-width:600px;color:#222;">
       <div style="background:#e8720c;padding:20px 24px;border-radius:8px 8px 0 0;">
-        <h2 style="color:#fff;margin:0;font-size:18px;">New Payment Submission</h2>
+        <h2 style="color:#fff;margin:0;font-size:18px;">New Enrollment &amp; Payment Submission</h2>
+        <p style="color:rgba(255,255,255,.85);margin:4px 0 0;font-size:12px;">Enrollment form and payment have both been completed.</p>
       </div>
       <div style="background:#fff;border:1px solid #f0d9c0;border-top:none;padding:24px;border-radius:0 0 8px 8px;">
         <p><strong>Child:</strong> ${childName}</p>
         <p><strong>Parent / Guardian:</strong> ${payerName}</p>
         <p><strong>Email:</strong> ${payerEmail}</p>
-        <p style="margin-top:14px;"><strong>Payment Options Selected:</strong></p>
+        <p style="margin-top:14px;"><strong>✅ Enrollment form submitted</strong></p>
+        <p style="margin-top:10px;"><strong>Payment options selected:</strong></p>
         <p style="margin-top:6px;">${options}</p>
-        <p style="margin-top:14px;font-size:.85rem;color:#888;">Note: Any Zelle confirmation attachments were uploaded via the form. Please check the enrollment records for attached files.</p>
+        ${attachments.length ? `<p style="margin-top:10px;font-size:.85rem;color:#555;">📎 ${attachments.length} file(s) attached to this email.</p>` : ''}
       </div>
     </div>`;
 
@@ -79,13 +81,15 @@ exports.handler = async function (event) {
   }
 
   try {
+    // One combined email to Divine Kids covering both enrollment + payment
     await transporter.sendMail({
       from: `"Divine Kids" <${process.env.SMTP_USER}>`,
       to: CENTER_EMAIL,
-      subject: `[PAYMENT] ${childName} — Payment Information Submitted`,
+      subject: `[NEW ENROLLMENT] ${childName} — Enrollment & Payment Complete`,
       html: htmlCenter,
       attachments,
     });
+    // Separate confirmation to parent
     if (payerEmail) {
       await transporter.sendMail({
         from: `"Divine Kids" <${process.env.SMTP_USER}>`,
