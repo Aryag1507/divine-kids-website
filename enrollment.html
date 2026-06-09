@@ -563,7 +563,7 @@
         <h3>Section 4 — Requirements for Exclusion from Compliance</h3>
         <div class="radio-group" style="flex-direction:column;gap:12px;">
           <label style="align-items:flex-start;">
-            <input type="radio" name="exclusionCompliance" value="immunization_affidavit" style="margin-top:3px;flex-shrink:0;" />
+            <input type="radio" name="exclusionCompliance" value="immunization_affidavit" required style="margin-top:3px;flex-shrink:0;" />
             <span>I have attached a signed and dated affidavit stating that I decline immunizations by reason of conscience, including religious belief, on the form described by Health and Safety Code Section 161.0041 submitted no later than the 90th day after the affidavit is notarized.</span>
           </label>
           <label style="align-items:flex-start;">
@@ -601,8 +601,8 @@
         </div>
 <div class="sig-pair">
           <div class="form-group">
-            <label for="nameVision">Printed Name (print full name)</label>
-            <input type="text" id="nameVision" name="nameVision" placeholder="Type full name" />
+            <label for="nameVision">Printed Name <span class="required">*</span></label>
+            <input type="text" id="nameVision" name="nameVision" placeholder="Type full name" required />
           </div>
           <div class="sig-date-field">
             <label for="sigVisionDate">Date</label>
@@ -798,8 +798,8 @@
         </div>
 <div class="sig-pair">
           <div class="form-group">
-            <label for="nameVaricella">Printed Name <span class="required">*</span></label>
-            <input type="text" id="nameVaricella" name="nameVaricella" placeholder="Type full name" required />
+            <label for="nameVaricella">Printed Name</label>
+            <input type="text" id="nameVaricella" name="nameVaricella" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
             <label for="sigVaricellaDate">Date</label>
