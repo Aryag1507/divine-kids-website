@@ -139,16 +139,12 @@ exports.handler = async function (event) {
 
   // Build attachments
   const attachments = [];
+  // Only Zelle confirmation files travel with the payment submission
   const fileFields = {
-    admissionZelleFile:     'Admission-Fee-Zelle-Confirmation',
-    firstWeekZelleFile:     'First-Week-Fee-Zelle-Confirmation',
-    insuranceCardFile:      'Insurance-Card',
-    affidavitFile:          'Affidavit',
-    admissionDocFile:       'Admission-Document',
-    vaccinationRecordsFile: 'Vaccination-Records',
+    admissionZelleFile: 'Admission-Fee-Zelle-Confirmation',
+    firstWeekZelleFile: 'First-Week-Fee-Zelle-Confirmation',
   };
-  // Files may be on the payment body or nested inside enrollmentData
-  const allData = { ...enrollment, ...body };
+  const allData = body;
   for (const [field, label] of Object.entries(fileFields)) {
     const f = allData[field];
     if (f && f.data) {

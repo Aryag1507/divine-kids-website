@@ -57,8 +57,12 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     });
 
     if (res.ok) {
-      // Save enrollment data for the payment page so both can be combined into one email
-      sessionStorage.setItem('enrollmentData', JSON.stringify(data));
+      // Save enrollment text data for the payment page (strip file attachments to keep payload small)
+      const fileFields = ['insuranceCardFile','affidavitFile','admissionDocFile','vaccinationRecordsFile'];
+      const textData = Object.fromEntries(
+        Object.entries(data).filter(([k]) => !fileFields.includes(k))
+      );
+      sessionStorage.setItem('enrollmentData', JSON.stringify(textData));
       form.reset();
       window.location.href = 'payment.html';
     } else {
