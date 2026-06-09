@@ -80,9 +80,8 @@ document.getElementById('paymentForm').addEventListener('submit', async function
 
     if (res.ok) {
       sessionStorage.removeItem('enrollmentData');
-      document.getElementById('success-banner').style.display = 'block';
       form.reset();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.location.href = 'index.html';
     } else {
       const body = await res.json().catch(() => ({}));
       dkAlert('There was a problem submitting: ' + (body.message || 'Please try again or email us directly.'));
