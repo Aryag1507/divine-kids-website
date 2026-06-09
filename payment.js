@@ -55,6 +55,12 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   // Collect text fields
   const data = Object.fromEntries(new FormData(form).entries());
 
+  // Pull enrollment data saved from the previous step
+  try {
+    const saved = sessionStorage.getItem('enrollmentData');
+    if (saved) data.enrollmentData = JSON.parse(saved);
+  } catch (_) {}
+
   // Attach Zelle confirmation files as base64
   if (admissionZelleChecked && admissionZelleFile) {
     const result = await fileToBase64(admissionZelleFile);
@@ -73,6 +79,7 @@ document.getElementById('paymentForm').addEventListener('submit', async function
     });
 
     if (res.ok) {
+      sessionStorage.removeItem('enrollmentData');
       document.getElementById('success-banner').style.display = 'block';
       form.reset();
       window.scrollTo({ top: 0, behavior: 'smooth' });

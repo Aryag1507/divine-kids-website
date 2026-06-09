@@ -57,6 +57,8 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     });
 
     if (res.ok) {
+      // Save enrollment data for the payment page so both can be combined into one email
+      sessionStorage.setItem('enrollmentData', JSON.stringify(data));
       form.reset();
       window.location.href = 'payment.html';
     } else {
