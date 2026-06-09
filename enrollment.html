@@ -220,7 +220,7 @@
         <!-- Authorized Release / Pick-Up -->
         <h4>Authorized Release Persons</h4>
         <div class="section-note-box">
-          I authorize the child care operation to release my child to leave the child care operation only with the following persons. Please list name and phone number for each. Children will only be released to a parent or guardian or to a person designated by the parent or guardian after verification of ID.
+          I authorize the program to release my child to leave the program only with the following persons. Please list name and phone number for each. Children will only be released to a parent or guardian or to a person designated by the parent or guardian after verification of ID.
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -266,9 +266,7 @@
         <div class="check-list">
           <label><input type="checkbox" name="transportEmergency" value="For emergency care" /> For emergency care</label>
           <label><input type="checkbox" name="transportFieldTrips" value="On field trips" /> On field trips</label>
-          <label><input type="checkbox" name="transportHome" value="To and from home" /> To and from home</label>
           <label><input type="checkbox" name="transportSchool" value="To and from school" /> To and from school</label>
-          <label><input type="checkbox" name="transportNone" value="None of the above" /> None of the above</label>
         </div>
 
         <!-- 2.2 Field Trips -->
@@ -291,7 +289,6 @@
           <label><input type="checkbox" name="waterWading" value="Wading pools" /> Wading pools</label>
           <label><input type="checkbox" name="waterSwimming" value="Swimming pools" /> Swimming pools</label>
           <label><input type="checkbox" name="waterAquatic" value="Aquatic playgrounds" /> Aquatic playgrounds</label>
-          <label><input type="checkbox" name="waterNone" value="None of the above" /> None of the above</label>
         </div>
         <div class="form-group" style="margin-top:12px;">
           <label>Is your child a competent swimmer? <span class="required">*</span></label>
@@ -330,7 +327,7 @@
           <label><input type="checkbox" name="policyParticipate" /> Procedures for parents to participate in activities</label>
           <label><input type="checkbox" name="policyInclusive" /> Procedures for supporting inclusive services</label>
           <label><input type="checkbox" name="policyPhysicalActivity" /> Promotion of indoor and outdoor physical activity including criteria for extreme weather conditions</label>
-          <label><input type="checkbox" name="policyCCR" /> Procedures for parents to contact Child Care Regulation (CCR), DFPS, Child Abuse Hotline and CCR website</label>
+          <label><input type="checkbox" name="policyCCR" /> Procedures for parents to contact program Regulation (CCR), DFPS, Child Abuse Hotline and CCR website</label>
         </div>
 
         <!-- 2.5 Meals -->
@@ -391,7 +388,7 @@
         <h4>7. Receipt of Parent's Rights <span class="required">*</span></h4>
         <div class="consent-row">
           <input type="checkbox" id="parentRightsAck" name="parentRightsAck" required />
-          <label for="parentRightsAck">I acknowledge I have received a written copy of my rights as a parent or guardian of a child enrolled at this facility. <span class="required">*</span></label>
+          <label for="parentRightsAck">I acknowledge that I have received a written copy of the Parent's Handbook that includes my rights and responsibilities as a parent or guardian of a child enrolled at this facility. <span class="required">*</span></label>
         </div>
 
         <!-- 2.8 Child's Special Care Needs -->
@@ -436,7 +433,7 @@
         </div>
 
         <!-- 2.9 School-Age Children -->
-        <h4>9. School-Age Children (if applicable)</h4>
+        <h4>9. School-Age Children</h4>
         <div class="form-row">
           <div class="form-group">
             <label for="schoolName">My child attends the following school</label>
@@ -513,20 +510,53 @@
           <label for="emergencyMedConsent">I give consent for the facility to secure any and all necessary emergency medical care for my child. <span class="required">*</span></label>
         </div>
 <div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-sec3" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-sec3-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-sec3-data" name="sig-sec3-data" />
+          <div class="form-group">
+            <label for="nameSec3">Parent or Legal Guardian (print full name)</label>
+            <input type="text" id="nameSec3" name="nameSec3" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
-            <label for="sigSec3Date">Date Signed</label>
+            <label for="sigSec3Date">Date</label>
             <input type="date" id="sigSec3Date" name="sigSec3Date" />
           </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════
+           SECTION 3B — MEDICAL INSURANCE
+      ══════════════════════════════════════════ -->
+      <div class="form-section">
+        <h3>Section 3B — Child's Medical Insurance Information</h3>
+        <p class="section-note">The Center does not carry liability insurance; therefore, the child's medical insurance is required for medical emergencies when parents or an alternative contact cannot be reached, and it is necessary for taking the child to a medical facility.</p>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Medical Insurance Card Attached: <span class="required">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="insuranceCardAttached" value="Yes" required /> Yes</label>
+            <label><input type="radio" name="insuranceCardAttached" value="No" /> No</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="insuranceCompany">Insurance Company Name</label>
+            <input type="text" id="insuranceCompany" name="insuranceCompany" />
+          </div>
+          <div class="form-group">
+            <label for="insurancePolicyNum">Policy / Member ID Number</label>
+            <input type="text" id="insurancePolicyNum" name="insurancePolicyNum" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="insuranceHolder">Policy Holder Name</label>
+            <input type="text" id="insuranceHolder" name="insuranceHolder" />
+          </div>
+          <div class="form-group">
+            <label for="insurancePhone">Insurance Contact Phone</label>
+            <input type="tel" id="insurancePhone" name="insurancePhone" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:8px;">
+          <label for="insuranceCardFile">Attach Insurance Card (optional)</label>
+          <input type="file" id="insuranceCardFile" name="insuranceCardFile" accept="image/*,.pdf" style="margin-top:4px;" />
         </div>
       </div>
 
@@ -544,6 +574,10 @@
             <input type="radio" name="exclusionCompliance" value="vision_hearing_affidavit" style="margin-top:3px;flex-shrink:0;" />
             <span>I have attached a signed and dated affidavit stating that the vision or hearing screening conflicts with the tenets or practices of a church or religious denomination that I am an adherent or member of.</span>
           </label>
+        </div>
+        <div class="form-group" style="margin-top:14px;">
+          <label for="affidavitFile">Attach Signed Affidavit (if applicable)</label>
+          <input type="file" id="affidavitFile" name="affidavitFile" accept="image/*,.pdf" style="margin-top:4px;" />
         </div>
       </div>
 
@@ -570,18 +604,12 @@
           </div>
         </div>
 <div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-vision" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-vision-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-vision-data" name="sig-vision-data" />
+          <div class="form-group">
+            <label for="nameVision">Printed Name (print full name)</label>
+            <input type="text" id="nameVision" name="nameVision" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
-            <label for="sigVisionDate">Date Signed</label>
+            <label for="sigVisionDate">Date</label>
             <input type="date" id="sigVisionDate" name="sigVisionDate" />
           </div>
         </div>
@@ -630,18 +658,12 @@
           </tbody>
         </table>
 <div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-hearing" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-hearing-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-hearing-data" name="sig-hearing-data" />
+          <div class="form-group">
+            <label for="nameHearing">Printed Name (print full name)</label>
+            <input type="text" id="nameHearing" name="nameHearing" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
-            <label for="sigHearingDate">Date Signed</label>
+            <label for="sigHearingDate">Date</label>
             <input type="date" id="sigHearingDate" name="sigHearingDate" />
           </div>
         </div>
@@ -652,15 +674,11 @@
       ══════════════════════════════════════════ -->
       <div class="form-section">
         <h3>Section 7 — Admission Requirement</h3>
-        <p class="section-note">If your child does not attend pre-kindergarten or school away from the child care operation, one of the following must be presented when your child is admitted to the child care operation or within one week of admission.</p>
+        <p class="section-note">If your child does not attend pre-kindergarten or school away from the program, one of the following must be presented when your child is admitted to the program or within one week of admission.</p>
         <div class="radio-group" style="flex-direction:column;gap:12px;">
           <label style="align-items:flex-start;">
-            <input type="radio" name="admissionReq" value="hcp_statement" style="margin-top:3px;flex-shrink:0;" />
-            <span>Health Care Professional's Statement: I have examined the above named child within the past year and find they are able to take part in the day care program.</span>
-          </label>
-          <label style="align-items:flex-start;">
             <input type="radio" name="admissionReq" value="signed_copy_attached" style="margin-top:3px;flex-shrink:0;" />
-            <span>A signed and dated copy of a health care professional's statement is attached.</span>
+            <span>A signed and dated copy of a health care professional's statement is attached, which states that the healthcare professional has examined the above named child within the past year and finds the child is able to take part in the program.</span>
           </label>
           <label style="align-items:flex-start;">
             <input type="radio" name="admissionReq" value="religious_conflict" style="margin-top:3px;flex-shrink:0;" />
@@ -668,37 +686,20 @@
           </label>
           <label style="align-items:flex-start;">
             <input type="radio" name="admissionReq" value="within_12_months" style="margin-top:3px;flex-shrink:0;" />
-            <span>My child has been examined within the past year by a health care professional and is able to participate in the day care program. Within 12 months of admission, I will obtain a health care professional's signed statement and submit it to the child care operation.</span>
+            <span>My child has been examined within the past year by a health care professional and is able to participate in the program. Within 12 months of admission, I will obtain a health care professional's signed statement and submit it to the program.</span>
           </label>
         </div>
-        <div class="form-row" style="margin-top:14px;">
-          <div class="form-group full">
-            <label for="hcpName">If selected, Health Care Professional Name</label>
-            <input type="text" id="hcpName" name="hcpName" />
-          </div>
+        <div class="form-group" style="margin-top:14px;">
+          <label for="admissionDocFile">Attach Supporting Statement / Affidavit</label>
+          <input type="file" id="admissionDocFile" name="admissionDocFile" accept="image/*,.pdf" style="margin-top:4px;" />
         </div>
-        <div class="form-row">
-          <div class="form-group full">
-            <label for="hcpAddress">If selected, Health Care Professional Street Address, City, State and ZIP Code</label>
-            <input type="text" id="hcpAddress" name="hcpAddress" />
-          </div>
-        </div>
-        <p style="font-size:.85rem;color:var(--muted);margin-top:16px;font-style:italic;background:#fff8f0;border-left:4px solid var(--primary);padding:10px 14px;border-radius:0 6px 6px 0;">
-          Please print this section, have it signed by your child's health care professional, and bring it to the center on or before the first day of enrollment.
-        </p>
-<div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Parent or Legal Guardian Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-sec7-parent" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-sec7-parent-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-sec7-parent-data" name="sig-sec7-parent-data" />
+        <div class="sig-pair">
+          <div class="form-group">
+            <label for="nameSec7Parent">Parent or Legal Guardian (print full name) (print full name)</label>
+            <input type="text" id="nameSec7Parent" name="nameSec7Parent" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
-            <label for="sigSec7ParentDate">Date Signed</label>
+            <label for="sigSec7ParentDate">Date</label>
             <input type="date" id="sigSec7ParentDate" name="sigSec7ParentDate" />
           </div>
         </div>
@@ -766,9 +767,25 @@
            SECTION 9 — PHYSICIAN VERIFICATION
       ══════════════════════════════════════════ -->
       <div class="form-section">
-        <h3>Section 9 — Physician or Public Health Personnel Verification</h3>
-        <p class="section-note">Signature or stamp of a physician or public health personnel verifying immunization information above.</p>
-        <p style="font-size:.8rem;color:var(--muted);margin-top:10px;">(This section is completed by the physician or public health personnel — not the parent. Signed in person.)</p>
+        <h3>Section 9 — Vaccination Records</h3>
+        <p class="section-note">Please attach a copy of vaccination records from your public health personnel's office.</p>
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Select one: <span class="required">*</span></label>
+          <div class="radio-group" style="flex-direction:column;gap:10px;margin-top:8px;">
+            <label style="align-items:flex-start;">
+              <input type="radio" name="vaccinationRecords" value="attached" required style="margin-top:3px;flex-shrink:0;" />
+              <span>I am attaching a copy of my child's vaccination records below.</span>
+            </label>
+            <label style="align-items:flex-start;">
+              <input type="radio" name="vaccinationRecords" value="on_first_day" style="margin-top:3px;flex-shrink:0;" />
+              <span>Records will be provided when my child is dropped off at the program for the first time.</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="vaccinationRecordsFile">Attach Vaccination Records (if available)</label>
+          <input type="file" id="vaccinationRecordsFile" name="vaccinationRecordsFile" accept="image/*,.pdf" style="margin-top:4px;" />
+        </div>
       </div>
 
       <!-- ══════════════════════════════════════════
@@ -782,18 +799,12 @@
           <input type="date" id="chickenpoxDate" name="chickenpoxDate" />
         </div>
 <div class="sig-pair">
-          <div class="sig-pad-wrap">
-            <p class="sig-pad-label">Signature</p>
-            <div class="sig-canvas-wrap">
-              <canvas id="sig-varicella" class="sig-pad" data-height="100"></canvas>
-            </div>
-            <div class="sig-actions">
-              <button type="button" class="btn-clear" id="sig-varicella-clear">Clear</button>
-            </div>
-            <input type="hidden" id="sig-varicella-data" name="sig-varicella-data" />
+          <div class="form-group">
+            <label for="nameVaricella">Printed Name (print full name)</label>
+            <input type="text" id="nameVaricella" name="nameVaricella" placeholder="Type full name" />
           </div>
           <div class="sig-date-field">
-            <label for="sigVaricellaDate">Date Signed</label>
+            <label for="sigVaricellaDate">Date</label>
             <input type="date" id="sigVaricellaDate" name="sigVaricellaDate" />
           </div>
         </div>
@@ -816,22 +827,11 @@
       <div class="form-section">
         <h3>Section 12 — Gang Free Zone</h3>
         <p style="font-size:.9rem;color:var(--text);">
-          Under the Texas Penal Code, any area within 1,000 feet of a child care center is a gang-free zone, where criminal offenses related to organized criminal activity are subject to harsher penalties.
+          Under the Texas Penal Code, any area within 1,000 feet of a program is a gang-free zone, where criminal offenses related to organized criminal activity are subject to harsher penalties.
         </p>
       </div>
 
-      <!-- ══════════════════════════════════════════
-           SECTION 13 — PRIVACY STATEMENT
-      ══════════════════════════════════════════ -->
-      <div class="form-section">
-        <h3>Section 13 — Privacy Statement</h3>
-        <p style="font-size:.9rem;color:var(--text);">
-          HHSC values your privacy. For more information, read our privacy policy online at
-          <a href="https://hhs.texas.gov/policies-practices-privacy#security" target="_blank" rel="noopener">https://hhs.texas.gov/policies-practices-privacy#security</a>.
-        </p>
-      </div>
-
-      <!-- ══════════════════════════════════════════
+<!-- ══════════════════════════════════════════
            PHOTO / MEDIA CONSENT (Custom)
       ══════════════════════════════════════════ -->
       <div class="form-section">
@@ -861,22 +861,14 @@
           <label for="handbookAck">I have read and agree to the Center's parent handbook and all operational policies. <span class="required">*</span></label>
         </div>
 
-        <div style="margin-top:24px;">
-          <label>Child's Parent or Legal Guardian Signature <span class="required">*</span></label>
-          <p style="font-size:.8rem;color:var(--muted);margin:4px 0 6px;">Draw your signature below using your mouse or finger.</p>
-          <div class="sig-canvas-wrap">
-            <canvas id="sig-canvas" width="740" height="140"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button type="button" class="btn-clear" id="clearSig">Clear Signature</button>
-          </div>
-          <input type="hidden" id="signatureData" name="signatureData" />
+        <div class="consent-box" style="margin-top:16px;border-left-color:#e8720c;">
+          By typing your full name below, you are signing this form electronically. Your typed name is legally equivalent to a handwritten (wet) signature and confirms your agreement to all statements in this enrollment form.
         </div>
 
         <div class="form-row" style="margin-top:16px;">
           <div class="form-group">
-            <label for="signerName">Printed Name <span class="required">*</span></label>
-            <input type="text" id="signerName" name="signerName" required />
+            <label for="signerName">Full Name (Electronic Signature) <span class="required">*</span></label>
+            <input type="text" id="signerName" name="signerName" required placeholder="Type your full legal name" />
           </div>
           <div class="form-group">
             <label for="sigDate">Date Signed <span class="required">*</span></label>
@@ -884,27 +876,8 @@
           </div>
         </div>
 
-        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
-          <label style="color:var(--muted);font-size:.875rem;">Center Designee Signature (completed by center staff)</label>
-          <p style="font-size:.8rem;color:var(--muted);margin-top:8px;">(Center Designee signature is completed by staff at the center.)</p>
-        </div>
-
         <button type="submit" class="btn btn-submit">Submit Enrollment Form</button>
-      </div>
-
-    </form>
-  </div>
-
-  <footer>
-    <div class="footer-inner">
-      <p>&copy; 2026 Divine Kids. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="enrollment.html">Enrollment</a>
-        <a href="contact.html">Contact</a>
-        <a href="https://www.facebook.com/profile.php?id=61589548977232" target="_blank" rel="noopener">Facebook</a>
-        <a href="https://www.instagram.com/divine___kids/" target="_blank" rel="noopener">Instagram</a>
-      </div>
-    </div>
+        </div>
   </footer>
 
   <script src="signature.js"></script>

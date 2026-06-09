@@ -8,12 +8,13 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     form.reportValidity();
     return;
   }
-  if (!document.getElementById('signatureData').value) {
-    alert('Please provide your signature before submitting.');
-    return;
-  }
   if (!document.getElementById('handbookAck').checked) {
     alert('Please acknowledge the parent handbook before submitting.');
+    return;
+  }
+  const signerName = document.getElementById('signerName').value.trim();
+  if (!signerName) {
+    alert('Please type your full name as your electronic signature before submitting.');
     return;
   }
 
@@ -33,14 +34,6 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     if (res.ok) {
       document.getElementById('success-banner').style.display = 'block';
       form.reset();
-      document.getElementById('signatureData').value = '';
-      // Clear signature canvas
-      const canvas = document.getElementById('sig-canvas');
-      if (canvas) {
-        const ctx = canvas.getContext('2d');
-        const ratio = window.devicePixelRatio || 1;
-        ctx.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
-      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const body = await res.json().catch(() => ({}));
