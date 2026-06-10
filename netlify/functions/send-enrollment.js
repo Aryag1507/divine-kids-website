@@ -236,7 +236,7 @@ function buildPdf(d) {
     field("Child's immunizations, vision and hearing screening current and on file at school", checked(d.immunizationCurrent));
 
     // ── Section 3 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 3 — Authorization For Emergency Medical Attention');
+    sectionHeader('Section 3A — Authorization For Emergency Medical Attention');
     note('In the event I cannot be reached, I authorize the person in charge to take my child to:');
     field('Physician Name', d.physicianName);
     field('Physician Phone', d.physicianPhone);
@@ -256,6 +256,8 @@ function buildPdf(d) {
     field('Policy / Member ID', d.insurancePolicyNum);
     field('Policy Holder', d.insuranceHolder);
     field('Insurance Phone', d.insurancePhone);
+    field('Parent/Guardian Printed Name (Sec. 3B)', d.nameSec3B);
+    field('Date Signed', d.sigSec3BDate);
 
     // ── Section 4 ─────────────────────────────────────────────────────────────
     sectionHeader('Section 4 — Requirements for Exclusion from Compliance');
@@ -564,11 +566,13 @@ function buildHtml(d, isCenter) {
       ${row("Date Signed", d.sigSec3Date)}
     `)}
     ${sec("Section 3B — Child's Medical Insurance Information", `
-      ${row("Medical Insurance Card Attached", d.insuranceCardAttached)}
+      ${row("Medical Insurance Card Attached", d.insuranceCardAttached === "No" ? "No — will submit on first day" : v(d.insuranceCardAttached))}
       ${row("Insurance Company", d.insuranceCompany)}
       ${row("Policy / Member ID Number", d.insurancePolicyNum)}
       ${row("Policy Holder Name", d.insuranceHolder)}
       ${row("Insurance Contact Phone", d.insurancePhone)}
+      ${row("Parent/Guardian Printed Name (Sec. 3B)", d.nameSec3B)}
+      ${row("Date Signed", d.sigSec3BDate)}
     `)}
     ${sec("Section 4 — Requirements for Exclusion from Compliance", `
       ${row("Selection", admMap[d.exclusionCompliance] || '—')}

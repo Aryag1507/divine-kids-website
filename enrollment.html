@@ -468,7 +468,7 @@
            SECTION 3 — AUTHORIZATION FOR EMERGENCY MEDICAL ATTENTION
       ══════════════════════════════════════════ -->
       <div class="form-section">
-        <h3>Section 3 — Authorization For Emergency Medical Attention</h3>
+        <h3>Section 3A — Authorization For Emergency Medical Attention</h3>
         <p class="section-note">In the event I cannot be reached to arrange for emergency medical care, I authorize the person in charge to take my child to:</p>
 
         <div class="form-row">
@@ -531,7 +531,7 @@
           <label>Medical Insurance Card Attached: <span class="required">*</span></label>
           <div class="radio-group">
             <label><input type="radio" name="insuranceCardAttached" value="Yes" required /> Yes</label>
-            <label><input type="radio" name="insuranceCardAttached" value="No" /> No</label>
+            <label><input type="radio" name="insuranceCardAttached" value="No" /> No — I will submit when dropping my child off for the first time</label>
           </div>
         </div>
         <div class="form-row">
@@ -555,8 +555,18 @@
           </div>
         </div>
         <div class="form-group" style="margin-top:8px;">
-          <label for="insuranceCardFile">Attach Insurance Card (optional)</label>
+          <label for="insuranceCardFile">Attach Insurance Card</label>
           <input type="file" id="insuranceCardFile" name="insuranceCardFile" accept="image/*,.pdf" style="margin-top:4px;" />
+        </div>
+        <div class="sig-pair" style="margin-top:16px;">
+          <div class="form-group">
+            <label for="nameSec3B">Parent or Legal Guardian <span class="required">*</span></label>
+            <input type="text" id="nameSec3B" name="nameSec3B" placeholder="Type full name" required />
+          </div>
+          <div class="sig-date-field">
+            <label for="sigSec3BDate">Date</label>
+            <input type="date" id="sigSec3BDate" name="sigSec3BDate" />
+          </div>
         </div>
       </div>
 
