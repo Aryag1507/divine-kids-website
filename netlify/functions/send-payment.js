@@ -5,7 +5,7 @@ const CENTER_EMAIL = 'Divinekids4soul@gmail.com';
 
 function v(val) { return (val && String(val).trim()) || '—'; }
 
-// ── Build Payment PDF ────────────────────────────────────────────────────────
+// ── Build Payment PDF — every word from the payment page ─────────────────────
 function buildPdf(d) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ margin: 45, size: 'letter', bufferPages: true });
@@ -14,98 +14,87 @@ function buildPdf(d) {
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
 
-    const W      = doc.page.width - 90;
-    const ORANGE = '#e8720c';
-    const DARK   = '#2a1f0e';
-    const MUTED  = '#7a5c3a';
-    const LGRAY  = '#fff8f0';
+    const W = doc.page.width - 90;
+    const ORANGE = '#e8720c'; const DARK = '#2a1f0e'; const MUTED = '#7a5c3a';
     let y = 45;
 
-    const checkY = (needed = 30) => {
-      if (y + needed > doc.page.height - 45) { doc.addPage(); y = 45; }
+    const checkY = (n=20) => { if (y+n > doc.page.height-45) { doc.addPage(); y=45; } };
+    const SH = (t) => { checkY(22); doc.rect(45,y,W,18).fill(ORANGE); doc.fillColor('#fff').fontSize(9.5).font('Helvetica-Bold').text(t,51,y+4,{width:W-12}); y+=22; };
+    const NOTE = (t) => { checkY(20); doc.fillColor(MUTED).fontSize(7.5).font('Helvetica-Oblique').text(t,45,y,{width:W}); y=doc.y+4; };
+    const STMT = (t) => { checkY(20); doc.fillColor(DARK).fontSize(8).font('Helvetica').text(t,45,y,{width:W}); y=doc.y+4; };
+    const QA = (q,a) => {
+      checkY(14);
+      const aStr = (a && typeof a === 'string' && a.trim()) ? a.trim() : (a ? String(a) : '---');
+      const sy=y;
+      doc.fillColor(MUTED).fontSize(8).font('Helvetica-Bold').text(q,45,y,{width:210});
+      const qh=doc.y-sy;
+      doc.fillColor(DARK).fontSize(8).font('Helvetica').text(aStr,265,sy,{width:W-220});
+      const ah=doc.y-sy; y=sy+Math.max(qh,ah)+3;
     };
-
-    const sectionHeader = (text) => {
-      checkY(26);
-      doc.rect(45, y, W, 20).fill(ORANGE);
-      doc.fillColor('#fff').fontSize(10).font('Helvetica-Bold').text(text, 51, y + 5, { width: W - 10 });
-      y += 24;
-    };
-
-    const field = (question, answer) => {
-      checkY(16);
-      const startY = y;
-      doc.fillColor(MUTED).fontSize(8.5).font('Helvetica-Bold').text(question, 45, y, { width: 220 });
-      const qH = doc.y - startY;
-      doc.fillColor(DARK).fontSize(8.5).font('Helvetica').text(v(answer), 275, startY, { width: W - 230 });
-      const aH = doc.y - startY;
-      y = startY + Math.max(qH, aH) + 4;
-    };
-
-    const checkField = (question, isChecked) => {
+    const CHECK = (label, isChecked) => {
       checkY(14);
       const prefix = isChecked ? '[X]' : '[ ]';
       const sy = y;
-      doc.fillColor(isChecked ? ORANGE : MUTED).fontSize(8.5).font('Helvetica-Bold')
-         .text(prefix, 45, y, {width:28});
-      doc.fillColor(isChecked ? DARK : MUTED).fontSize(8.5).font(isChecked ? 'Helvetica-Bold' : 'Helvetica')
-         .text(question, 77, sy, {width:W-32});
-      y = doc.y + 3;
+      doc.fillColor(isChecked ? ORANGE : MUTED).fontSize(8).font('Helvetica-Bold').text(prefix,52,y,{width:28});
+      doc.fillColor(isChecked ? DARK : MUTED).fontSize(8).font(isChecked ? 'Helvetica-Bold' : 'Helvetica').text(label,80,sy,{width:W-35});
+      y=doc.y+3;
     };
-
-    const note = (text) => {
-      checkY(18);
-      doc.rect(45, y, W, 1).fill('#e0cdb8');
-      y += 4;
-      doc.fillColor(MUTED).fontSize(7.5).font('Helvetica-Oblique').text(text, 45, y, { width: W });
-      y = doc.y + 6;
-    };
+    const DIV = () => { checkY(6); doc.rect(45,y,W,0.5).fill('#e8d5be'); y+=6; };
 
     // ── Title ─────────────────────────────────────────────────────────────────
-    doc.fillColor(ORANGE).fontSize(18).font('Helvetica-Bold').text('Divine Kids — Payment Information', 45, y);
-    y = doc.y + 4;
-    doc.fillColor(MUTED).fontSize(9).font('Helvetica')
-       .text(`Submitted: ${new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })}`, 45, y);
-    y = doc.y + 10;
-    doc.rect(45, y, W, 0.5).fill('#e0cdb8');
-    y += 10;
+    doc.fillColor(ORANGE).fontSize(16).font('Helvetica-Bold').text('Divine Kids — Payment Information', 45, y, {width:W});
+    y = doc.y + 2;
+    doc.fillColor(MUTED).fontSize(8).font('Helvetica').text('Complete your enrollment by submitting your payment details below.', 45, y, {width:W});
+    y = doc.y + 2;
+    doc.fillColor(MUTED).fontSize(8).font('Helvetica').text('Submitted: '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}), 45, y, {width:W});
+    y = doc.y + 8;
+    doc.rect(45,y,W,1).fill('#e0cdb8'); y+=8;
 
     // ── Section 15 ────────────────────────────────────────────────────────────
-    sectionHeader('Section 15 — Payment Information');
-    note('Admission priority will be given to the child whose admission fee and first week fee has been received by the center.');
-    field("Child's Full Name", d.paymentChildName);
-    field('Parent / Guardian Name', d.payerName);
-    field('Email Address', d.payerEmail);
+    SH('Section 15 — Payment Information');
 
-    y += 6;
-    doc.fillColor(MUTED).fontSize(8.5).font('Helvetica-Bold').text('Payment Options Selected:', 45, y);
-    y = doc.y + 6;
+    // Notice box text
+    doc.rect(45,y,W,1).fill('#e8720c'); y+=2;
+    STMT("Please refer to the Parent's Handbook on the Important Forms & Documents page for admission and weekly fee structure. Admission priority will be given to the child whose admission fee and first week fee has been received by the center.");
+    doc.rect(45,y,W,1).fill('#e8720c'); y+=6;
 
-    checkField('1. Admission fee has been paid through Zelle and confirmation is attached.', d.payAdmissionZelle === 'yes');
-    checkField('2. First week fee has been paid through Zelle and confirmation is attached.', d.payFirstWeekZelle === 'yes');
-    checkField('3. Admission fee has been paid through cash.', d.payAdmissionCash === 'yes');
-    checkField('4. First week fee has been paid through cash.', d.payFirstWeekCash === 'yes');
+    DIV();
+    QA("Child's Full Name", d.paymentChildName);
+    QA('Parent / Guardian Name', d.payerName);
+    QA('Email Address', d.payerEmail);
+    DIV();
 
-    y += 8;
-    if (d.payAdmissionZelle === 'yes' || d.payFirstWeekZelle === 'yes') {
-      doc.fillColor(MUTED).fontSize(7.5).font('Helvetica-Oblique')
-         .text('Note: Zelle confirmation screenshot(s) are attached to this email.', 45, y, { width: W });
-      y = doc.y + 8;
-    }
+    // Zelle section
+    STMT('Pay the fee through Zelle');
+    NOTE('Scan the QR code below with your banking app to send payment via Zelle. (QR code displayed on the payment page)');
+    DIV();
+
+    // Payment options
+    STMT('Select all that apply:');
+    y += 4;
+    CHECK('1. Admission fee has been paid through Zelle and confirmation is attached.', d.payAdmissionZelle === 'yes');
+    QA('   Zelle Confirmation Attached', d.admissionZelleFile ? 'Yes (see attachment)' : '---');
+    y += 2;
+    CHECK('2. First week fee has been paid through Zelle and confirmation is attached.', d.payFirstWeekZelle === 'yes');
+    QA('   Zelle Confirmation Attached', d.firstWeekZelleFile ? 'Yes (see attachment)' : '---');
+    y += 2;
+    CHECK('3. Admission fee has been paid through cash.', d.payAdmissionCash === 'yes');
+    y += 2;
+    CHECK('4. First week fee has been paid through cash.', d.payFirstWeekCash === 'yes');
 
     // ── Footer ────────────────────────────────────────────────────────────────
     const pages = doc.bufferedPageRange();
-    for (let i = 0; i < pages.count; i++) {
-      doc.switchToPage(pages.start + i);
-      doc.fillColor(MUTED).fontSize(7.5).font('Helvetica')
-         .text(`Divine Kids — Payment Information  |  Page ${i + 1} of ${pages.count}`,
-               45, doc.page.height - 30, { width: W, align: 'center' });
+    for (let i=0; i<pages.count; i++) {
+      doc.switchToPage(pages.start+i);
+      doc.fillColor(MUTED).fontSize(7).font('Helvetica')
+         .text('Divine Kids — Payment Information  |  Page '+(i+1)+' of '+pages.count,
+               45, doc.page.height-28, {width:W, align:'center'});
     }
-
     doc.flushPages();
     doc.end();
   });
 }
+
 
 // ── Handler ──────────────────────────────────────────────────────────────────
 exports.handler = async function (event) {
