@@ -3,9 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Important Forms — Divine Kids</title>
+  <title>Important Forms & Documents — Divine Kids</title>
   <link rel="icon" type="image/png" href="logo-removebg.png" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .doc-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .doc-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(232,114,12,.14);
+    }
+    .doc-icon {
+      font-size: 2.4rem;
+    }
+    .doc-type {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      width: fit-content;
+    }
+    .doc-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+    .doc-desc {
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .doc-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: .875rem;
+      text-decoration: none;
+      transition: background .15s, transform .15s;
+      width: fit-content;
+      margin-top: 4px;
+    }
+    .doc-download:hover {
+      background: var(--primary-dark);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    .notice-box {
+      background: #fff8f0;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -20,27 +101,66 @@
       <nav>
         <a href="index.html">Home</a>
         <a href="enrollment.html">Enrollment Form</a>
+        <a href="important-forms.html" class="active">Important Forms</a>
         <a href="contact.html">Contact Us</a>
       </nav>
     </div>
   </header>
 
   <div class="page-header">
-    <h2>Important <span>Forms</span></h2>
-    <p>Required forms to be completed before your child's first day.</p>
+    <h2>Important Forms <span>&amp; Documents</span></h2>
+    <p>Download, complete, and submit the required forms before your child's first day.</p>
   </div>
 
-  <div class="container" style="padding:40px 20px 60px;">
-    <div class="form-section">
-      <h3>Food Allergy Emergency Plan</h3>
-      <p style="font-size:.9rem;color:var(--muted);margin-bottom:16px;line-height:1.7;">
-        If your child has diagnosed food allergies, a completed Food Allergy Emergency Plan must be submitted to the center before the first day of the program. Please download, complete, and return this form to the center.
-      </p>
-      <p style="font-size:.875rem;color:var(--muted);font-style:italic;">
-        The form will be made available here shortly. Please contact us at
-        <a href="mailto:Divinekids4soul@gmail.com">Divinekids4soul@gmail.com</a> or
-        <a href="tel:8327266572">832-726-6572</a> to obtain a copy.
-      </p>
+  <div class="container" style="padding: 40px 40px 60px;">
+
+    <div class="notice-box">
+      <strong>Please note:</strong> All required forms must be completed and submitted to the center before your child's first day in the program. Contact us at
+      <a href="mailto:Divinekids4soul@gmail.com">Divinekids4soul@gmail.com</a> or
+      <a href="tel:8327266572">832-726-6572</a> if you have any questions.
+    </div>
+
+    <div class="docs-grid">
+
+      <!-- Food Allergy Emergency Plan -->
+      <div class="doc-card">
+        <div class="doc-icon">🍽️</div>
+        <span class="doc-type">Required Form</span>
+        <h3 class="doc-title">Food Allergy Emergency Care Plan</h3>
+        <p class="doc-desc">
+          If your child has diagnosed food allergies, this form <strong>must</strong> be completed and submitted before the first day of the program. It outlines emergency procedures in case of an allergic reaction.
+        </p>
+        <a class="doc-download" href="forms/food-allergy-emergency-plan.pdf" download="Food-Allergy-Emergency-Plan.pdf">
+          ⬇ Download Form
+        </a>
+      </div>
+
+      <!-- Medication Authorization -->
+      <div class="doc-card">
+        <div class="doc-icon">💊</div>
+        <span class="doc-type">Required Form</span>
+        <h3 class="doc-title">Medication Authorization Form</h3>
+        <p class="doc-desc">
+          If your child requires any medication to be administered during program hours, this authorization form must be completed and submitted. A separate form is required for each medication.
+        </p>
+        <a class="doc-download" href="forms/medication-authorization-form.pdf" download="Medication-Authorization-Form.pdf">
+          ⬇ Download Form
+        </a>
+      </div>
+
+      <!-- Parent Handbook -->
+      <div class="doc-card">
+        <div class="doc-icon">📖</div>
+        <span class="doc-type">Document</span>
+        <h3 class="doc-title">Parent Handbook</h3>
+        <p class="doc-desc">
+          The Parent Handbook contains all operational policies, procedures, rights and responsibilities for families enrolled at Divine Kids. Please read it thoroughly before signing the enrollment form.
+        </p>
+        <a class="doc-download" href="forms/parent-handbook.pdf" download="Divine-Kids-Parent-Handbook.pdf">
+          ⬇ Download Handbook
+        </a>
+      </div>
+
     </div>
   </div>
 
@@ -49,6 +169,7 @@
       <p>&copy; 2026 Divine Kids. All rights reserved.</p>
       <div class="footer-links">
         <a href="enrollment.html">Enrollment</a>
+        <a href="important-forms.html">Important Forms</a>
         <a href="contact.html">Contact</a>
         <a href="https://www.facebook.com/profile.php?id=61589548977232" target="_blank" rel="noopener">Facebook</a>
         <a href="https://www.instagram.com/divine___kids/" target="_blank" rel="noopener">Instagram</a>
