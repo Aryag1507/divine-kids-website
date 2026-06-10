@@ -100,7 +100,7 @@ document.getElementById('paymentForm').addEventListener('submit', async function
     if (res.ok) {
       sessionStorage.removeItem('enrollmentData');
       form.reset();
-      window.location.href = 'index.html';
+      showConfirmation();
     } else {
       const body = await res.json().catch(() => ({}));
       dkAlert('There was a problem submitting: ' + (body.message || 'Please try again or email us directly.'));
@@ -112,3 +112,42 @@ document.getElementById('paymentForm').addEventListener('submit', async function
     submitBtn.textContent = 'Submit Payment Information';
   }
 });
+
+function showConfirmation() {
+  const overlay = document.createElement('div');
+  overlay.className = 'dk-modal-overlay';
+  overlay.innerHTML = `
+    <div class="dk-modal" role="dialog" aria-modal="true" style="max-width:480px;">
+      <div class="dk-modal-header" style="background:#e8720c;">
+        <span class="dk-modal-icon">✅</span>
+        <span>Enrollment Complete!</span>
+      </div>
+      <div class="dk-modal-body" style="text-align:center;padding:28px 24px;">
+        <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+        <h3 style="color:var(--primary);margin-bottom:12px;font-size:1.2rem;">Thank You!</h3>
+        <p style="margin-bottom:10px;">Your enrollment and payment information have been successfully submitted.</p>
+        <p style="color:var(--muted);font-size:.875rem;">A confirmation email has been sent to you. We look forward to welcoming your child to <strong>Divine Kids</strong>!</p>
+        <div style="margin-top:20px;padding:12px;background:#fff8f0;border-radius:8px;font-size:.85rem;color:var(--muted);">
+          Redirecting you to the home page in <span id="countdown">5</span> seconds…
+        </div>
+      </div>
+      <div class="dk-modal-footer" style="justify-content:center;">
+        <button class="dk-modal-btn" id="confirmOkBtn">Go to Home Page</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+
+  const redirect = () => { overlay.remove(); window.location.href = 'index.html'; };
+
+  document.getElementById('confirmOkBtn').addEventListener('click', redirect);
+
+  // Countdown timer
+  let seconds = 5;
+  const countEl = document.getElementById('countdown');
+  const timer = setInterval(() => {
+    seconds--;
+    if (countEl) countEl.textContent = seconds;
+    if (seconds <= 0) { clearInterval(timer); redirect(); }
+  }, 1000);
+}
