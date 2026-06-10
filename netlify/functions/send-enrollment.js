@@ -40,21 +40,30 @@ function buildPdf(d) {
     const STMT = (t) => { checkY(20); doc.fillColor(DARK).fontSize(8).font('Helvetica').text(t,45,y,{width:W}); y=doc.y+4; };
     const QA = (q,a) => {
       checkY(14);
+      const aStr = (a && typeof a === 'string' && a.trim()) ? a.trim() : (a ? String(a) : '---');
       const sy=y;
       doc.fillColor(MUTED).fontSize(8).font('Helvetica-Bold').text(q,45,y,{width:200});
       const qh=doc.y-sy;
-      doc.fillColor(DARK).fontSize(8).font('Helvetica').text(String(a&&a.trim?a.trim():a||'—'),255,sy,{width:W-210});
+      doc.fillColor(DARK).fontSize(8).font('Helvetica').text(aStr,255,sy,{width:W-210});
       const ah=doc.y-sy; y=sy+Math.max(qh,ah)+3;
     };
     const RADIO = (label, selected) => {
-      checkY(12);
-      doc.fillColor(selected?DARK:MUTED).fontSize(8).font(selected?'Helvetica-Bold':'Helvetica')
-         .text((selected?'● ':'○ ')+label, 55, y, {width:W-10}); y=doc.y+2;
+      checkY(14);
+      const prefix = selected ? '(X)' : '( )';
+      const sy = y;
+      doc.fillColor(selected ? ORANGE : MUTED).fontSize(8).font('Helvetica-Bold')
+         .text(prefix, 52, y, {width:24});
+      doc.fillColor(selected ? DARK : MUTED).fontSize(8).font(selected ? 'Helvetica-Bold' : 'Helvetica')
+         .text(label, 80, sy, {width:W-35}); y=doc.y+3;
     };
-    const CHECK = (label, checked) => {
-      checkY(12);
-      doc.fillColor(checked?DARK:MUTED).fontSize(8).font(checked?'Helvetica-Bold':'Helvetica')
-         .text((checked?'☑ ':'☐ ')+label, 55, y, {width:W-10}); y=doc.y+2;
+    const CHECK = (label, isChecked) => {
+      checkY(14);
+      const prefix = isChecked ? '[X]' : '[ ]';
+      const sy = y;
+      doc.fillColor(isChecked ? ORANGE : MUTED).fontSize(8).font('Helvetica-Bold')
+         .text(prefix, 52, y, {width:24});
+      doc.fillColor(isChecked ? DARK : MUTED).fontSize(8).font(isChecked ? 'Helvetica-Bold' : 'Helvetica')
+         .text(label, 80, sy, {width:W-35}); y=doc.y+3;
     };
     const DIV = () => { checkY(6); doc.rect(45,y,W,0.5).fill('#e8d5be'); y+=6; };
 

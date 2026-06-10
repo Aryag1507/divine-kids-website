@@ -44,9 +44,12 @@ function buildPdf(d) {
 
     const checkField = (question, isChecked) => {
       checkY(14);
-      doc.fillColor(isChecked ? DARK : MUTED)
-         .fontSize(8.5).font(isChecked ? 'Helvetica-Bold' : 'Helvetica')
-         .text(`${isChecked ? '☑' : '☐'}  ${question}`, 45, y, { width: W });
+      const prefix = isChecked ? '[X]' : '[ ]';
+      const sy = y;
+      doc.fillColor(isChecked ? ORANGE : MUTED).fontSize(8.5).font('Helvetica-Bold')
+         .text(prefix, 45, y, {width:28});
+      doc.fillColor(isChecked ? DARK : MUTED).fontSize(8.5).font(isChecked ? 'Helvetica-Bold' : 'Helvetica')
+         .text(question, 77, sy, {width:W-32});
       y = doc.y + 3;
     };
 
