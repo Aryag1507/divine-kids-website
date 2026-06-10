@@ -120,7 +120,6 @@ function buildPdf(d) {
     field('Employer', d.parent2Employer);
     field('Address (if different)', d.parent2Address);
 
-    field('Parent 2 Phone', d.parent2Phone);
     field("Guardian's Phone", d.guardianPhone);
     field('Custody Documents on File', v(d.custodyDocs));
 
@@ -202,7 +201,7 @@ function buildPdf(d) {
       ['Sunday', d.sunAM, d.sunPM],
     ];
     days.forEach(([day, am, pm]) => {
-      if (am || pm) field(day, `AM: ${v(am)}  |  PM: ${v(pm)}`);
+      field(day, `AM: ${v(am)}  |  PM: ${v(pm)}`);
     });
 
     subHeader('7. Receipt of Parent\'s Rights');
@@ -234,6 +233,7 @@ function buildPdf(d) {
       { label: 'Release to sibling (<18)', val: d.permSiblingRelease },
     ]);
     field('Authorized pick-up/drop-off locations', d.pickupLocations);
+    field("Child's immunizations, vision and hearing screening current and on file at school", checked(d.immunizationCurrent));
 
     // ── Section 3 ─────────────────────────────────────────────────────────────
     sectionHeader('Section 3 — Authorization For Emergency Medical Attention');
@@ -275,8 +275,16 @@ function buildPdf(d) {
 
     // ── Section 6 ─────────────────────────────────────────────────────────────
     sectionHeader('Section 6 — Hearing Exam Results');
-    field('Right Ear Result', d.hearingRightResult);
-    field('Left Ear Result', d.hearingLeftResult);
+    subHeader('Right Ear');
+    field('1000 Hz', d.hearingRight1000);
+    field('2000 Hz', d.hearingRight2000);
+    field('4000 Hz', d.hearingRight4000);
+    field('Pass or Fail', d.hearingRightResult);
+    subHeader('Left Ear');
+    field('1000 Hz', d.hearingLeft1000);
+    field('2000 Hz', d.hearingLeft2000);
+    field('4000 Hz', d.hearingLeft4000);
+    field('Pass or Fail', d.hearingLeftResult);
     field('Printed Name', d.nameHearing);
     field('Date', d.sigHearingDate);
 
@@ -290,6 +298,27 @@ function buildPdf(d) {
     field('Selection', admMap[d.admissionReq] || v(d.admissionReq));
     field('Parent/Guardian Name (Sec. 7)', d.nameSec7Parent);
     field('Date', d.sigSec7ParentDate);
+
+    // ── Section 8 ─────────────────────────────────────────────────────────────
+    sectionHeader('Section 8 — Vaccine Information');
+    note('Provide the date your child received each vaccine dose.');
+
+    const vaccines = [
+      ['Hepatitis B',                    [['Birth (first dose)', d.hepB1], ['1–2 months (second dose)', d.hepB2], ['6–18 months (third dose)', d.hepB3]]],
+      ['Rotavirus',                      [['2 months (first dose)', d.rota1], ['4 months (second dose)', d.rota2], ['6 months (third dose)', d.rota3]]],
+      ['Diphtheria, Tetanus, Pertussis', [['2 months (first dose)', d.dtap1], ['4 months (second dose)', d.dtap2], ['6 months (third dose)', d.dtap3], ['15–18 months (fourth dose)', d.dtap4], ['4–6 years (fifth dose)', d.dtap5]]],
+      ['Haemophilus Influenza Type B',   [['2 months (first dose)', d.hib1], ['4 months (second dose)', d.hib2], ['6 months (third dose)', d.hib3], ['12–15 months (fourth dose)', d.hib4]]],
+      ['Pneumococcal',                   [['2 months (first dose)', d.pcv1], ['4 months (second dose)', d.pcv2], ['6 months (third dose)', d.pcv3], ['12–15 months (fourth dose)', d.pcv4]]],
+      ['Inactivated Poliovirus',         [['2 months (first dose)', d.ipv1], ['4 months (second dose)', d.ipv2], ['6–18 months (third dose)', d.ipv3], ['4–6 years (fourth dose)', d.ipv4]]],
+      ['Influenza',                      [['Yearly starting at 6 months', d.flu1]]],
+      ['Measles, Mumps, Rubella',        [['12–15 months (first dose)', d.mmr1], ['4–6 years (second dose)', d.mmr2]]],
+      ['Varicella (Chickenpox)',         [['12–15 months (first dose)', d.var1], ['4–6 years (second dose)', d.var2]]],
+      ['Hepatitis A',                    [['12–23 months (first dose)', d.hepA1], ['6 months after first dose (second dose)', d.hepA2]]],
+    ];
+    vaccines.forEach(([vaccineName, doses]) => {
+      subHeader(vaccineName);
+      doses.forEach(([schedule, date]) => field(schedule, date));
+    });
 
     // ── Section 9 ─────────────────────────────────────────────────────────────
     sectionHeader('Section 9 — Vaccination Records');
@@ -372,7 +401,7 @@ function buildHtml(d, isCenter) {
   const transport = [d.transportEmergency, d.transportFieldTrips, d.transportSchool].filter(Boolean).join(', ') || '—';
   const waterActs = [d.waterTablePlay&&'Water table',d.waterSprinkler&&'Sprinkler',d.waterWading&&'Wading pools',d.waterSwimming&&'Swimming pools',d.waterAquatic&&'Aquatic'].filter(Boolean).join(', ') || '—';
   const meals = [d.mealNone&&'None',d.mealBreakfast&&'Breakfast',d.mealMorningSnack&&'Morning snack',d.mealLunch&&'Lunch',d.mealAfternoonSnack&&'Afternoon snack',d.mealSupper&&'Supper',d.mealEveningSnack&&'Evening snack'].filter(Boolean).join(', ') || '—';
-  const schedDays = ['mon','tue','wed','thu','fri','sat','sun'].map(day => { const am=d[day+'AM'],pm=d[day+'PM']; return (am||pm)?`${day.charAt(0).toUpperCase()+day.slice(1)}: ${v(am)}–${v(pm)}`:null; }).filter(Boolean).join(' | ') || '—';
+  const schedDays = ['mon','tue','wed','thu','fri','sat','sun'].map(day => { const am=d[day+'AM'],pm=d[day+'PM']; return `${day.charAt(0).toUpperCase()+day.slice(1)}: AM ${v(am)} / PM ${v(pm)}`; }).join(' | ');
   const specialNeeds = [d.needEnvAllergies&&'Env. allergies',d.needFoodIntolerance&&'Food intolerance',d.needExistingIllness&&'Existing illness',d.needPreviousIllness&&'Previous illness',d.needInjuries&&'Injuries',d.needActivityLimits&&'Activity limits',d.needAccommodations&&'Accommodations',d.needAdaptiveEquip&&'Adaptive equip',d.needComplications&&'Complications',d.needMedications&&'Long-term meds'].filter(Boolean).join(', ') || '—';
 
   const greeting = isCenter
@@ -380,13 +409,33 @@ function buildHtml(d, isCenter) {
     : `<p style="margin:0 0 6px;">Dear ${v(d.parent1Name ? d.parent1Name.split(' ')[0] : 'Parent')},</p>
        <p style="margin:0 0 10px;">Thank you for submitting the enrollment form for <strong>${childName}</strong>. A complete PDF copy is attached for your records.</p>`;
 
+  const vaccineRows = [
+    ['Hepatitis B',                    [['Birth (first dose)', d.hepB1],['1–2 months (second dose)', d.hepB2],['6–18 months (third dose)', d.hepB3]]],
+    ['Rotavirus',                      [['2 months (first dose)', d.rota1],['4 months (second dose)', d.rota2],['6 months (third dose)', d.rota3]]],
+    ['Diphtheria, Tetanus, Pertussis', [['2 months (first dose)', d.dtap1],['4 months (second dose)', d.dtap2],['6 months (third dose)', d.dtap3],['15–18 months (fourth dose)', d.dtap4],['4–6 years (fifth dose)', d.dtap5]]],
+    ['Haemophilus Influenza Type B',   [['2 months (first dose)', d.hib1],['4 months (second dose)', d.hib2],['6 months (third dose)', d.hib3],['12–15 months (fourth dose)', d.hib4]]],
+    ['Pneumococcal',                   [['2 months (first dose)', d.pcv1],['4 months (second dose)', d.pcv2],['6 months (third dose)', d.pcv3],['12–15 months (fourth dose)', d.pcv4]]],
+    ['Inactivated Poliovirus',         [['2 months (first dose)', d.ipv1],['4 months (second dose)', d.ipv2],['6–18 months (third dose)', d.ipv3],['4–6 years (fourth dose)', d.ipv4]]],
+    ['Influenza',                      [['Yearly starting at 6 months', d.flu1]]],
+    ['Measles, Mumps, Rubella',        [['12–15 months (first dose)', d.mmr1],['4–6 years (second dose)', d.mmr2]]],
+    ['Varicella (Chickenpox)',         [['12–15 months (first dose)', d.var1],['4–6 years (second dose)', d.var2]]],
+    ['Hepatitis A',                    [['12–23 months (first dose)', d.hepA1],['6 months after first dose (second dose)', d.hepA2]]],
+  ].map(([name, doses]) =>
+    `<tr><td colspan="2" style="background:#fff3e8;font-weight:700;font-size:10px;padding:4px 10px;color:#e8720c;">${name}</td></tr>` +
+    doses.map(([sched, date]) => row(sched, date)).join('')
+  ).join('');
+
+  const admMap = { signed_copy_attached: 'Signed copy of healthcare professional statement attached', religious_conflict: 'Religious conflict affidavit attached', within_12_months: 'Child examined within past year; statement to be submitted within 12 months' };
+
   const tableRows = `
     ${sec("Section 1 — General Information", `
+      ${row("Operation's Name", d.operationName || 'Divine Kids')}
       ${row("Child's Full Name", d.childFullName)}
       ${row("Date of Birth", d.childDOB)}
       ${row("Child Lives With", d.childLivesWith)}
       ${row("Home Address", d.childAddress)}
       ${row("Date of Admission", d.dateAdmission)}
+      ${row("Date of Withdrawal", d.dateWithdrawal)}
       ${row("Custody Docs on File", d.custodyDocs)}
     `)}
     ${sec("Parent / Guardian 1", `
@@ -394,102 +443,181 @@ function buildHtml(d, isCenter) {
       ${row("Email", d.parent1Email)}
       ${row("Phone", d.parent1Phone)}
       ${row("Employer", d.parent1Employer)}
-      ${row("Address (if diff.)", d.parent1Address)}
+      ${row("Address (if different)", d.parent1Address)}
     `)}
     ${sec("Parent / Guardian 2", `
       ${row("Name", d.parent2Name)}
       ${row("Email", d.parent2Email)}
       ${row("Phone", d.parent2Phone)}
       ${row("Employer", d.parent2Employer)}
+      ${row("Address (if different)", d.parent2Address)}
     `)}
-    ${sec("Emergency Contact", `
+    ${sec("Phone Numbers", `
+      ${row("Parent 1 Phone", d.parent1Phone)}
+      ${row("Parent 2 Phone", d.parent2Phone)}
+      ${row("Guardian's Phone", d.guardianPhone)}
+    `)}
+    ${sec("Emergency Contact (when parent/guardian cannot be reached)", `
       ${row("Name", d.ec1Name)}
       ${row("Relationship", d.ec1Relation)}
       ${row("Phone", d.ec1Phone)}
       ${row("Address", d.ec1Address)}
     `)}
     ${sec("Authorized Persons to Pick the Child", `
-      ${row("Person 1", d.pu1Name ? `${v(d.pu1Name)} — ${v(d.pu1Phone)}` : '—')}
-      ${row("Person 2", d.pu2Name ? `${v(d.pu2Name)} — ${v(d.pu2Phone)}` : '—')}
-      ${row("Person 3", d.pu3Name ? `${v(d.pu3Name)} — ${v(d.pu3Phone)}` : '—')}
+      ${row("Person 1 Name", d.pu1Name)}
+      ${row("Person 1 Phone", d.pu1Phone)}
+      ${row("Person 2 Name", d.pu2Name)}
+      ${row("Person 2 Phone", d.pu2Phone)}
+      ${row("Person 3 Name", d.pu3Name)}
+      ${row("Person 3 Phone", d.pu3Phone)}
     `)}
-    ${sec("Section 2.1 — Transportation Consent", `${row("Consents", transport)}`)}
+    ${sec("Section 2.1 — Transportation Consent", `
+      ${row("For emergency care", checked(d.transportEmergency))}
+      ${row("On field trips", checked(d.transportFieldTrips))}
+      ${row("To and from school", checked(d.transportSchool))}
+    `)}
     ${sec("Section 2.2 — Field Trips", `
       ${row("Decision", d.fieldTrips)}
       ${row("Comments", d.fieldTripsComments)}
     `)}
     ${sec("Section 2.3 — Water Activities", `
-      ${row("Activities", waterActs)}
-      ${row("Competent Swimmer?", d.competentSwimmer)}
-      ${row("Swimming Risk Condition?", d.swimmingRisk)}
+      ${row("Water table play", checked(d.waterTablePlay))}
+      ${row("Sprinkler play", checked(d.waterSprinkler))}
+      ${row("Wading pools", checked(d.waterWading))}
+      ${row("Swimming pools", checked(d.waterSwimming))}
+      ${row("Aquatic playgrounds", checked(d.waterAquatic))}
+      ${row("Is your child a competent swimmer?", d.competentSwimmer)}
+      ${row("Does your child have any condition putting them at risk while swimming?", d.swimmingRisk)}
     `)}
     ${sec("Section 2.4 — Receipt of Written Operational Policies", `
-      ${row("Policies Acknowledged", policies)}
+      ${row("Discipline and guidance", checked(d.policyDiscipline))}
+      ${row("Procedures for release of children", checked(d.policyRelease))}
+      ${row("Suspension and expulsion", checked(d.policySuspension))}
+      ${row("Illness and exclusion criteria", checked(d.policyIllness))}
+      ${row("Emergency plans", checked(d.policyEmergency))}
+      ${row("Procedures for dispensing medications", checked(d.policyMedications))}
+      ${row("Procedures for conducting health checks", checked(d.policyHealthChecks))}
+      ${row("Immunization requirements for children", checked(d.policyImmunization))}
+      ${row("Safe sleep", checked(d.policySafeSleep))}
+      ${row("Meals and food service practices", checked(d.policyMeals))}
+      ${row("Procedures for parents to discuss concerns with director", checked(d.policyDiscussConcerns))}
+      ${row("Procedures to visit center without prior approval", checked(d.policyVisitCenter))}
+      ${row("Procedures for parents to participate in activities", checked(d.policyParticipate))}
+      ${row("Procedures for supporting inclusive services", checked(d.policyInclusive))}
+      ${row("Promotion of indoor and outdoor physical activity", checked(d.policyPhysicalActivity))}
+      ${row("Procedures to contact CCR, DFPS, Child Abuse Hotline", checked(d.policyCCR))}
     `)}
-    ${sec("Section 2.5 — Meals", `${row("Meals", meals)}`)}
-    ${sec("Section 2.6 — Days & Times in Care", `${row("Schedule", schedDays)}`)}
-    ${sec("Section 2.7 — Receipt of Parent's Rights", `${row("Acknowledged", checked(d.parentRightsAck))}`)}
+    ${sec("Section 2.5 — Meals", `
+      ${row("None", checked(d.mealNone))}
+      ${row("Breakfast", checked(d.mealBreakfast))}
+      ${row("Morning snack", checked(d.mealMorningSnack))}
+      ${row("Lunch", checked(d.mealLunch))}
+      ${row("Afternoon snack", checked(d.mealAfternoonSnack))}
+      ${row("Supper", checked(d.mealSupper))}
+      ${row("Evening snack", checked(d.mealEveningSnack))}
+    `)}
+    ${sec("Section 2.6 — Days & Times in Care", `
+      ${row("Monday", `AM: ${v(d.monAM)} / PM: ${v(d.monPM)}`)}
+      ${row("Tuesday", `AM: ${v(d.tueAM)} / PM: ${v(d.tuePM)}`)}
+      ${row("Wednesday", `AM: ${v(d.wedAM)} / PM: ${v(d.wedPM)}`)}
+      ${row("Thursday", `AM: ${v(d.thuAM)} / PM: ${v(d.thuPM)}`)}
+      ${row("Friday", `AM: ${v(d.friAM)} / PM: ${v(d.friPM)}`)}
+      ${row("Saturday", `AM: ${v(d.satAM)} / PM: ${v(d.satPM)}`)}
+      ${row("Sunday", `AM: ${v(d.sunAM)} / PM: ${v(d.sunPM)}`)}
+    `)}
+    ${sec("Section 2.7 — Receipt of Parent's Rights", `
+      ${row("I acknowledge I have received a written copy of the Parent's Handbook including my rights and responsibilities", checked(d.parentRightsAck))}
+    `)}
     ${sec("Section 2.8 — Child's Special Care Needs", `
-      ${row("Needs", specialNeeds)}
+      ${row("Environmental allergies", checked(d.needEnvAllergies))}
+      ${row("Food intolerances", checked(d.needFoodIntolerance))}
+      ${row("Existing illness", checked(d.needExistingIllness))}
+      ${row("Previous serious illness", checked(d.needPreviousIllness))}
+      ${row("Injuries and hospitalizations in past 12 months", checked(d.needInjuries))}
+      ${row("Limitations or restrictions on activities", checked(d.needActivityLimits))}
+      ${row("Reasonable accommodations or modifications", checked(d.needAccommodations))}
+      ${row("Adaptive equipment", checked(d.needAdaptiveEquip))}
+      ${row("Symptoms or indications of complications", checked(d.needComplications))}
+      ${row("Medications prescribed for continuous long-term use", checked(d.needMedications))}
       ${row("Other", d.specialNeedsOther)}
       ${row("Explanation", d.specialNeedsExplain)}
-      ${row("Diagnosed Food Allergies?", d.foodAllergies)}
+      ${row("Does your child have diagnosed food allergies?", d.foodAllergies)}
     `)}
     ${sec("Section 2.9 — School-Age Children", `
-      ${row("School", d.schoolName)}
+      ${row("School Name", d.schoolName)}
       ${row("School Phone", d.schoolPhone)}
-      ${row("Pick-up Locations", d.pickupLocations)}
+      ${row("Permission: Walk to/from school or home", checked(d.permWalkHome))}
+      ${row("Permission: Ride a bus", checked(d.permRideBus))}
+      ${row("Permission: Released to sibling under 18", checked(d.permSiblingRelease))}
+      ${row("Authorized pick-up/drop-off locations", d.pickupLocations)}
+      ${row("Immunizations/vision/hearing current and on file at school", checked(d.immunizationCurrent))}
     `)}
-    ${sec("Section 3 — Emergency Medical Authorization", `
-      ${row("Physician", d.physicianName)}
+    ${sec("Section 3 — Authorization For Emergency Medical Attention", `
+      ${row("Physician Name", d.physicianName)}
       ${row("Physician Phone", d.physicianPhone)}
       ${row("Physician Address", d.physicianAddress)}
-      ${row("Emergency Facility", d.emergencyFacilityName)}
+      ${row("Emergency Care Facility", d.emergencyFacilityName)}
       ${row("Facility Phone", d.emergencyFacilityPhone)}
       ${row("Facility Address", d.emergencyFacilityAddress)}
-      ${row("Emergency Medical Consent", checked(d.emergencyMedConsent))}
-      ${row("Parent Name (Sec. 3)", d.nameSec3)}
-      ${row("Date", d.sigSec3Date)}
+      ${row("I give consent for facility to secure emergency medical care", checked(d.emergencyMedConsent))}
+      ${row("Parent/Guardian Printed Name (Sec. 3)", d.nameSec3)}
+      ${row("Date Signed", d.sigSec3Date)}
     `)}
-    ${sec("Section 3B — Medical Insurance", `
-      ${row("Card Attached", d.insuranceCardAttached)}
-      ${row("Company", d.insuranceCompany)}
-      ${row("Policy / Member ID", d.insurancePolicyNum)}
-      ${row("Policy Holder", d.insuranceHolder)}
-      ${row("Insurance Phone", d.insurancePhone)}
+    ${sec("Section 3B — Child's Medical Insurance Information", `
+      ${row("Medical Insurance Card Attached", d.insuranceCardAttached)}
+      ${row("Insurance Company", d.insuranceCompany)}
+      ${row("Policy / Member ID Number", d.insurancePolicyNum)}
+      ${row("Policy Holder Name", d.insuranceHolder)}
+      ${row("Insurance Contact Phone", d.insurancePhone)}
     `)}
-    ${sec("Section 4 — Exclusion from Compliance", `
-      ${row("Selection", d.exclusionCompliance || '—')}
+    ${sec("Section 4 — Requirements for Exclusion from Compliance", `
+      ${row("Selection", admMap[d.exclusionCompliance] || '—')}
     `)}
-    ${sec("Section 5 — Vision Exam", `
+    ${sec("Section 5 — Vision Exam Results", `
       ${row("Right Eye 20/", d.visionRightEye)}
       ${row("Left Eye 20/", d.visionLeftEye)}
       ${row("Result", d.visionResult)}
       ${row("Printed Name", d.nameVision)}
-      ${row("Date", d.sigVisionDate)}
+      ${row("Date Signed", d.sigVisionDate)}
     `)}
-    ${sec("Section 6 — Hearing Exam", `
-      ${row("Right Ear", d.hearingRightResult)}
-      ${row("Left Ear", d.hearingLeftResult)}
+    ${sec("Section 6 — Hearing Exam Results", `
+      ${row("Right Ear — 1000 Hz", d.hearingRight1000)}
+      ${row("Right Ear — 2000 Hz", d.hearingRight2000)}
+      ${row("Right Ear — 4000 Hz", d.hearingRight4000)}
+      ${row("Right Ear — Pass or Fail", d.hearingRightResult)}
+      ${row("Left Ear — 1000 Hz", d.hearingLeft1000)}
+      ${row("Left Ear — 2000 Hz", d.hearingLeft2000)}
+      ${row("Left Ear — 4000 Hz", d.hearingLeft4000)}
+      ${row("Left Ear — Pass or Fail", d.hearingLeftResult)}
       ${row("Printed Name", d.nameHearing)}
-      ${row("Date", d.sigHearingDate)}
+      ${row("Date Signed", d.sigHearingDate)}
     `)}
     ${sec("Section 7 — Admission Requirement", `
-      ${row("Selection", d.admissionReq)}
-      ${row("Parent Name (Sec. 7)", d.nameSec7Parent)}
-      ${row("Date", d.sigSec7ParentDate)}
+      ${row("Selection", admMap[d.admissionReq] || v(d.admissionReq))}
+      ${row("Parent/Guardian Printed Name (Sec. 7)", d.nameSec7Parent)}
+      ${row("Date Signed", d.sigSec7ParentDate)}
     `)}
+    ${sec("Section 8 — Vaccine Information", vaccineRows)}
     ${sec("Section 9 — Vaccination Records", `
-      ${row("Records", d.vaccinationRecords === 'attached' ? 'Attached' : 'Will provide on first day')}
+      ${row("Records", d.vaccinationRecords === 'attached' ? 'Attached with this form' : 'Will provide on first day of program')}
     `)}
-    ${sec("Section 10 — Varicella", `
-      ${row("Chickenpox Date (if applicable)", d.chickenpoxDate)}
+    ${sec("Section 10 — Varicella for Chickenpox", `
+      ${row("Chickenpox disease date (if applicable)", d.chickenpoxDate)}
       ${row("Printed Name", d.nameVaricella)}
+      ${row("Date Signed", d.sigVaricellaDate)}
     `)}
-    ${sec("Photo & Media Consent", `${row("Consent", d.photoConsent)}`)}
-    ${sec("Section 14 — Electronic Signature", `
-      ${row("Handbook Acknowledged", checked(d.handbookAck))}
-      ${row("Electronic Signature", d.signerName)}
+    ${sec("Section 11 — Additional Information About Immunizations", `
+      ${row("Reference", 'www.dshs.state.tx.us/immunize/public.shtm')}
+    `)}
+    ${sec("Section 12 — Gang Free Zone", `
+      ${row("Notice", 'Any area within 1,000 feet of a child care center is a gang-free zone under Texas Penal Code.')}
+    `)}
+    ${sec("Photo & Media Consent", `
+      ${row("I give consent for my child to appear in digital and printed media used to promote the Center", d.photoConsent)}
+    `)}
+    ${sec("Section 14 — Acknowledgment & Electronic Signature", `
+      ${row("Handbook acknowledged and all operational policies agreed to", checked(d.handbookAck))}
+      ${row("Electronic Signature (Full Name)", d.signerName)}
       ${row("Date Signed", d.sigDate)}
     `)}`;
 
