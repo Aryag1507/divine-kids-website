@@ -71,14 +71,8 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting…';
 
-  // Payment form fields
+  // Payment form fields only
   const data = Object.fromEntries(new FormData(form).entries());
-
-  // Pull full enrollment data (text + files) from sessionStorage
-  try {
-    const saved = sessionStorage.getItem('enrollmentData');
-    if (saved) data.enrollmentData = JSON.parse(saved);
-  } catch (_) {}
 
   // Compress and attach Zelle confirmation files
   if (admissionZelleChecked && admissionZelleFile) {
@@ -98,7 +92,6 @@ document.getElementById('paymentForm').addEventListener('submit', async function
     });
 
     if (res.ok) {
-      sessionStorage.removeItem('enrollmentData');
       form.reset();
       showConfirmation();
     } else {

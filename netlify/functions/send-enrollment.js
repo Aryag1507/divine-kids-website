@@ -263,10 +263,9 @@ exports.handler = async function (event) {
   };
 
   try {
-    // Enrollment data is saved client-side and combined with payment before sending.
-    // This function is kept as a fallback only — the combined email is sent via send-payment.
-    // No email is sent here anymore.
-    void transporter; void mailBase; void parentEmail;
+    // Send enrollment email to both parent and Divine Kids
+    await transporter.sendMail({ ...mailBase, to: parentEmail, html: buildHtml(data, false) });
+    await transporter.sendMail({ ...mailBase, to: CENTER_EMAIL, subject: `[NEW ENROLLMENT] ${subject}`, html: buildHtml(data, true) });
   } catch (err) {
     console.error('Email send error:', err);
     return { statusCode: 500, body: JSON.stringify({ message: 'Failed to send email' }) };

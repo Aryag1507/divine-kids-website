@@ -53,12 +53,12 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
 
   const submitBtn = form.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Saving…';
+  submitBtn.textContent = 'Submitting…';
 
   // Collect all text fields
   const data = Object.fromEntries(new FormData(form).entries());
 
-  // Collect and compress all file attachments
+  // Collect and compress enrollment file attachments
   const fileFields = ['insuranceCardFile', 'affidavitFile', 'admissionDocFile', 'vaccinationRecordsFile'];
   for (const fieldName of fileFields) {
     const input = document.getElementById(fieldName) || form.elements[fieldName];
@@ -68,20 +68,24 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
     }
   }
 
-  // Save everything to sessionStorage — no email sent yet
-  // Payment page will send ONE combined email with everything
   try {
-    sessionStorage.setItem('enrollmentData', JSON.stringify(data));
-  } catch (err) {
-    // sessionStorage full (files too large) — save text only
-    const textOnly = Object.fromEntries(
-      Object.entries(data).filter(([k]) => !fileFields.includes(k))
-    );
-    sessionStorage.setItem('enrollmentData', JSON.stringify(textOnly));
-  }
+    const res = await fetch('/.netlify/functions/send-enrollment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-  form.reset();
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Submit Enrollment Form';
-  window.location.href = 'payment.html';
+    if (res.ok) {
+      form.reset();
+      window.location.href = 'payment.html';
+    } else {
+      const body = await res.json().catch(() => ({}));
+      dkAlert('There was a problem submitting the form: ' + (body.message || 'Please try again or email us directly.'));
+    }
+  } catch (err) {
+    dkAlert('Network error. Please check your connection and try again.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Enrollment Form';
+  }
 });
