@@ -6,7 +6,7 @@ const CENTER_EMAIL = 'Divinekids4soul@gmail.com';
 function v(val) { return (val && String(val).trim()) || '—'; }
 function checked(val) { return val === 'on' || val === 'yes' || val === true ? 'Yes' : 'No'; }
 
-// ── Build comprehensive PDF ──────────────────────────────────────────────────
+// ── Build comprehensive PDF — every word from the enrollment form ─────────────
 function buildPdf(d) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ margin: 45, size: 'letter', bufferPages: true });
@@ -16,356 +16,335 @@ function buildPdf(d) {
     doc.on('error', reject);
 
     const W = doc.page.width - 90;
-    const ORANGE = '#e8720c';
-    const DARK   = '#2a1f0e';
-    const MUTED  = '#7a5c3a';
-    const LGRAY  = '#f5f0ea';
+    const ORANGE = '#e8720c'; const DARK = '#2a1f0e'; const MUTED = '#7a5c3a';
     let y = 45;
 
-    const checkY = (needed = 40) => {
-      if (y + needed > doc.page.height - 45) { doc.addPage(); y = 45; }
-    };
+    const checkY = (n=20) => { if (y+n > doc.page.height-45) { doc.addPage(); y=45; } };
 
-    const title = (text) => {
-      checkY(30);
-      doc.fillColor(ORANGE).fontSize(18).font('Helvetica-Bold').text(text, 45, y);
-      y = doc.y + 4;
-    };
+    // Title block
+    checkY(40);
+    doc.fillColor(ORANGE).fontSize(16).font('Helvetica-Bold').text('Divine Kids — Child Enrollment Form', 45, y, {width:W});
+    y = doc.y + 2;
+    doc.fillColor(MUTED).fontSize(8).font('Helvetica')
+       .text('Please complete all sections. A confirmation will be emailed to you upon submission.', 45, y, {width:W});
+    y = doc.y + 2;
+    doc.fillColor(MUTED).fontSize(8).font('Helvetica')
+       .text('Submitted: '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}), 45, y, {width:W});
+    y = doc.y + 8;
+    doc.rect(45,y,W,1).fill('#e0cdb8'); y+=8;
 
-    const subtitle = (text) => {
-      checkY(16);
-      doc.fillColor(MUTED).fontSize(9).font('Helvetica').text(text, 45, y);
-      y = doc.y + 8;
-    };
-
-    const sectionHeader = (text) => {
-      checkY(26);
-      doc.rect(45, y, W, 20).fill(ORANGE);
-      doc.fillColor('#fff').fontSize(10).font('Helvetica-Bold').text(text, 51, y + 5, { width: W - 10 });
-      y += 24;
-    };
-
-    const subHeader = (text) => {
-      checkY(18);
-      doc.rect(45, y, W, 16).fill(LGRAY);
-      doc.fillColor(DARK).fontSize(9.5).font('Helvetica-Bold').text(text, 51, y + 3, { width: W - 10 });
-      y += 20;
-    };
-
-    const field = (question, answer, indent = 0) => {
-      const qWidth = 200 - indent;
-      const aX = 45 + indent + qWidth + 6;
-      const aWidth = W - qWidth - 6 - indent;
-      checkY(16);
-      const startY = y;
-      doc.fillColor(MUTED).fontSize(8.5).font('Helvetica-Bold')
-         .text(question, 45 + indent, y, { width: qWidth });
-      const qH = doc.y - startY;
-      doc.fillColor(DARK).fontSize(8.5).font('Helvetica')
-         .text(v(answer), aX, startY, { width: aWidth });
-      const aH = doc.y - startY;
-      y = startY + Math.max(qH, aH) + 4;
-    };
-
-    const multiCheck = (question, items) => {
+    // Helpers
+    const SH = (t) => { checkY(22); doc.rect(45,y,W,18).fill(ORANGE); doc.fillColor('#fff').fontSize(9.5).font('Helvetica-Bold').text(t,51,y+4,{width:W-12}); y+=22; };
+    const SUB = (t) => { checkY(16); doc.rect(45,y,W,14).fill('#fff3e8'); doc.fillColor(ORANGE).fontSize(8.5).font('Helvetica-Bold').text(t,51,y+3,{width:W-12}); y+=17; };
+    const NOTE = (t) => { checkY(20); doc.fillColor(MUTED).fontSize(7.5).font('Helvetica-Oblique').text(t,45,y,{width:W}); y=doc.y+4; };
+    const STMT = (t) => { checkY(20); doc.fillColor(DARK).fontSize(8).font('Helvetica').text(t,45,y,{width:W}); y=doc.y+4; };
+    const QA = (q,a) => {
       checkY(14);
-      doc.fillColor(MUTED).fontSize(8.5).font('Helvetica-Bold').text(question, 45, y);
-      y = doc.y + 2;
-      const selected = items.filter(i => i.val).map(i => i.label);
-      doc.fillColor(DARK).fontSize(8.5).font('Helvetica')
-         .text(selected.length ? selected.join(', ') : '—', 45, y, { width: W });
-      y = doc.y + 4;
+      const sy=y;
+      doc.fillColor(MUTED).fontSize(8).font('Helvetica-Bold').text(q,45,y,{width:200});
+      const qh=doc.y-sy;
+      doc.fillColor(DARK).fontSize(8).font('Helvetica').text(String(a&&a.trim?a.trim():a||'—'),255,sy,{width:W-210});
+      const ah=doc.y-sy; y=sy+Math.max(qh,ah)+3;
     };
-
-    const note = (text) => {
-      checkY(20);
-      doc.rect(45, y, W, 1).fill('#e0cdb8');
-      y += 5;
-      doc.fillColor(MUTED).fontSize(7.5).font('Helvetica-Oblique').text(text, 45, y, { width: W });
-      y = doc.y + 6;
+    const RADIO = (label, selected) => {
+      checkY(12);
+      doc.fillColor(selected?DARK:MUTED).fontSize(8).font(selected?'Helvetica-Bold':'Helvetica')
+         .text((selected?'● ':'○ ')+label, 55, y, {width:W-10}); y=doc.y+2;
     };
-
-    const divider = () => {
-      checkY(10);
-      doc.rect(45, y, W, 0.5).fill('#e0cdb8');
-      y += 8;
+    const CHECK = (label, checked) => {
+      checkY(12);
+      doc.fillColor(checked?DARK:MUTED).fontSize(8).font(checked?'Helvetica-Bold':'Helvetica')
+         .text((checked?'☑ ':'☐ ')+label, 55, y, {width:W-10}); y=doc.y+2;
     };
+    const DIV = () => { checkY(6); doc.rect(45,y,W,0.5).fill('#e8d5be'); y+=6; };
 
-    // ── Cover ─────────────────────────────────────────────────────────────────
-    title('Divine Kids — Child Enrollment Form');
-    subtitle(`Submitted: ${new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' })}`);
-    divider();
+    // ═══ SECTION 1 ═══════════════════════════════════════════════════════════
+    SH('Section 1 — General Information');
+    QA("Operation's Name", d.operationName||'Divine Kids');
+    QA("Child's Full Name", d.childFullName);
+    QA("Child's Date of Birth", d.childDOB);
+    STMT('Child Lives With:');
+    RADIO('Both parents', d.childLivesWith==='Both parents');
+    RADIO('Mom', d.childLivesWith==='Mom');
+    RADIO('Dad', d.childLivesWith==='Dad');
+    RADIO('Guardian', d.childLivesWith==='Guardian');
+    QA("Child's Home Street Address, City, State and ZIP Code", d.childAddress);
+    QA('Date of Admission', d.dateAdmission);
+    QA('Date of Withdrawal', d.dateWithdrawal);
+    DIV();
+    SUB('Parent or Guardian 1');
+    QA('Name of Parent or Guardian 1', d.parent1Name);
+    QA('Address of Parent or Guardian 1, if different from child\'s', d.parent1Address);
+    QA('Email Address', d.parent1Email);
+    QA('Employer', d.parent1Employer);
+    DIV();
+    SUB('Parent or Guardian 2');
+    QA('Name of Parent or Guardian 2', d.parent2Name);
+    QA('Address of Parent or Guardian 2, if different from child\'s', d.parent2Address);
+    QA('Email Address', d.parent2Email);
+    QA('Employer', d.parent2Employer);
+    DIV();
+    SUB('Phone Numbers Where Parents or Guardian May Be Reached While Child Is in Care');
+    QA('Parent 1 Area Code and Phone No.', d.parent1Phone);
+    QA('Parent 2 Area Code and Phone No.', d.parent2Phone);
+    QA("Guardian's Area Code and Phone No.", d.guardianPhone);
+    DIV();
+    STMT('Custody Documents on File?');
+    RADIO('Yes', d.custodyDocs==='Yes');
+    RADIO('No', d.custodyDocs==='No');
+    QA('Custody Document Attached', d.custodyDocFile ? 'Yes (see attachment)' : '—');
+    DIV();
+    SUB('In Case of an Emergency, When the Parent or Guardian Cannot Be Reached, Call:');
+    QA('Name of Emergency Contact', d.ec1Name);
+    QA('Relationship', d.ec1Relation);
+    QA('Area Code and Phone No.', d.ec1Phone);
+    QA('Street Address, City, State and ZIP Code', d.ec1Address);
+    DIV();
+    SUB('Authorized Persons to Pick the Child');
+    NOTE('I authorize the program to release my child to leave the program only with the following persons. Please list name and phone number for each. Children will only be released to a parent or guardian or to a person designated by the parent or guardian after verification of ID.');
+    QA('Person 1 — Name', d.pu1Name); QA('Person 1 — Phone', d.pu1Phone);
+    QA('Person 2 — Name', d.pu2Name); QA('Person 2 — Phone', d.pu2Phone);
+    QA('Person 3 — Name', d.pu3Name); QA('Person 3 — Phone', d.pu3Phone);
 
-    // ── Section 1 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 1 — General Information');
-    field("Operation's Name", d.operationName || 'Divine Kids');
-    field("Child's Full Name", d.childFullName);
-    field("Child's Date of Birth", d.childDOB);
-    field('Child Lives With', d.childLivesWith);
-    field("Child's Home Address", d.childAddress);
-    field('Date of Admission', d.dateAdmission);
-    field('Date of Withdrawal', d.dateWithdrawal);
+    // ═══ SECTION 2 ═══════════════════════════════════════════════════════════
+    SH('Section 2 — Consent Information');
 
-    subHeader('Parent or Guardian 1');
-    field('Name', d.parent1Name);
-    field('Email', d.parent1Email);
-    field('Phone', d.parent1Phone);
-    field('Employer', d.parent1Employer);
-    field('Address (if different)', d.parent1Address);
+    SUB('1. Transportation');
+    STMT('I give consent for my child to be transported and supervised by the operation\'s employees. Check all that apply.');
+    CHECK('For emergency care', !!d.transportEmergency);
+    CHECK('On field trips', !!d.transportFieldTrips);
+    CHECK('To and from school', !!d.transportSchool);
+    DIV();
 
-    subHeader('Parent or Guardian 2');
-    field('Name', d.parent2Name);
-    field('Email', d.parent2Email);
-    field('Phone', d.parent2Phone);
-    field('Employer', d.parent2Employer);
-    field('Address (if different)', d.parent2Address);
+    SUB('2. Field Trips');
+    RADIO('I give consent for my child to participate in field trips.', d.fieldTrips==='I give consent for my child to participate in field trips.');
+    RADIO('I do not give consent for my child to participate in field trips.', d.fieldTrips==='I do not give consent for my child to participate in field trips.');
+    QA('Comments', d.fieldTripsComments);
+    DIV();
 
-    field("Guardian's Phone", d.guardianPhone);
-    field('Custody Documents on File', v(d.custodyDocs));
-    field('Custody Document Attached', d.custodyDocFile ? 'Yes (attached)' : '—');
+    SUB('3. Water Activities');
+    STMT('I give consent for my child to participate in the following water activities. Check all that apply.');
+    CHECK('Water table play', !!d.waterTablePlay);
+    CHECK('Sprinkler play', !!d.waterSprinkler);
+    CHECK('Wading pools', !!d.waterWading);
+    CHECK('Swimming pools', !!d.waterSwimming);
+    CHECK('Aquatic playgrounds', !!d.waterAquatic);
+    STMT('Is your child a competent swimmer?');
+    RADIO('Yes', d.competentSwimmer==='Yes');
+    RADIO('No', d.competentSwimmer==='No');
+    NOTE('If no, your child is required to wear a life jacket while in or near a swimming pool.');
+    STMT('Does your child have any physical, health, behavioral or other condition that would put them at risk while swimming?');
+    RADIO('Yes', d.swimmingRisk==='Yes');
+    RADIO('No', d.swimmingRisk==='No');
+    NOTE('If yes, your child is required to wear a life jacket while in or near a swimming pool.');
+    NOTE('Note: A competent swimmer can enter and exit a pool safely on their own, tread water or float on their back for one minute, and swim 25 yards with no assistance.');
+    DIV();
 
-    subHeader('Emergency Contact (when parent/guardian cannot be reached)');
-    field('Name', d.ec1Name);
-    field('Relationship', d.ec1Relation);
-    field('Phone', d.ec1Phone);
-    field('Address', d.ec1Address);
+    SUB('4. Receipt of Written Operational Policies');
+    STMT('I acknowledge receipt of the facility\'s operational policies, including those for the following. Check all that apply.');
+    CHECK('Discipline and guidance', !!d.policyDiscipline);
+    CHECK('Procedures for release of children', !!d.policyRelease);
+    CHECK('Suspension and expulsion', !!d.policySuspension);
+    CHECK('Illness and exclusion criteria', !!d.policyIllness);
+    CHECK('Emergency plans', !!d.policyEmergency);
+    CHECK('Procedures for dispensing medications', !!d.policyMedications);
+    CHECK('Procedures for conducting health checks', !!d.policyHealthChecks);
+    CHECK('Immunization requirements for children', !!d.policyImmunization);
+    CHECK('Safe sleep', !!d.policySafeSleep);
+    CHECK('Meals and food service practices', !!d.policyMeals);
+    CHECK('Procedures for parents to discuss concerns with the director', !!d.policyDiscussConcerns);
+    CHECK('Procedures to visit the center without securing prior approval', !!d.policyVisitCenter);
+    CHECK('Procedures for parents to participate in activities', !!d.policyParticipate);
+    CHECK('Procedures for supporting inclusive services', !!d.policyInclusive);
+    CHECK('Promotion of indoor and outdoor physical activity including criteria for extreme weather conditions', !!d.policyPhysicalActivity);
+    CHECK('Procedures for parents to contact program Regulation (CCR), DFPS, Child Abuse Hotline and CCR website', !!d.policyCCR);
+    DIV();
 
-    subHeader('Authorized Persons to Pick the Child');
-    note('Children will only be released to a parent/guardian or designated person after verification of ID.');
-    field('Person 1', d.pu1Name ? `${v(d.pu1Name)} — ${v(d.pu1Phone)}` : '—');
-    field('Person 2', d.pu2Name ? `${v(d.pu2Name)} — ${v(d.pu2Phone)}` : '—');
-    field('Person 3', d.pu3Name ? `${v(d.pu3Name)} — ${v(d.pu3Phone)}` : '—');
+    SUB('5. Meals');
+    STMT('I understand the following meals will be served to my child while in care. Check all that apply.');
+    CHECK('None', !!d.mealNone);
+    CHECK('Breakfast', !!d.mealBreakfast);
+    CHECK('Morning snack', !!d.mealMorningSnack);
+    CHECK('Lunch', !!d.mealLunch);
+    CHECK('Afternoon snack', !!d.mealAfternoonSnack);
+    CHECK('Supper', !!d.mealSupper);
+    CHECK('Evening snack', !!d.mealEveningSnack);
+    DIV();
 
-    // ── Section 2 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 2 — Consent Information');
+    SUB('6. Days and Times in Care');
+    STMT('My child is normally in care on the following days and times.');
+    [['Monday',d.monAM,d.monPM],['Tuesday',d.tueAM,d.tuePM],['Wednesday',d.wedAM,d.wedPM],
+     ['Thursday',d.thuAM,d.thuPM],['Friday',d.friAM,d.friPM],['Saturday',d.satAM,d.satPM],
+     ['Sunday',d.sunAM,d.sunPM]].forEach(([day,am,pm]) => QA(day, 'A.M.: '+(am||'—')+'  |  P.M.: '+(pm||'—')));
+    DIV();
 
-    subHeader('1. Transportation');
-    note('I give consent for my child to be transported and supervised by the operation\'s employees.');
-    multiCheck('Consent given for:', [
-      { label: 'For emergency care',      val: d.transportEmergency },
-      { label: 'On field trips',          val: d.transportFieldTrips },
-      { label: 'To and from school',      val: d.transportSchool },
-    ]);
+    SUB('7. Receipt of Parent\'s Rights');
+    CHECK('I acknowledge that I have received a written copy of the Parent\'s Handbook that includes my rights and responsibilities as a parent or guardian of a child enrolled at this facility.', d.parentRightsAck==='on'||!!d.parentRightsAck);
+    DIV();
 
-    subHeader('2. Field Trips');
-    field('Decision', d.fieldTrips);
-    field('Comments', d.fieldTripsComments);
+    SUB('8. Child\'s Special Care Needs');
+    STMT('Check all that apply.');
+    CHECK('Environmental allergies', !!d.needEnvAllergies);
+    CHECK('Limitations or restrictions on child\'s activities', !!d.needActivityLimits);
+    CHECK('Food intolerances', !!d.needFoodIntolerance);
+    CHECK('Reasonable accommodations or modifications', !!d.needAccommodations);
+    CHECK('Existing illness', !!d.needExistingIllness);
+    CHECK('Adaptive equipment, include instructions below', !!d.needAdaptiveEquip);
+    CHECK('Previous serious illness', !!d.needPreviousIllness);
+    CHECK('Symptoms or indications of complications', !!d.needComplications);
+    CHECK('Injuries and hospitalizations in the past 12 months', !!d.needInjuries);
+    CHECK('Medications prescribed for continuous long-term use', !!d.needMedications);
+    QA('Other:', d.specialNeedsOther);
+    QA('Explain any needs selected above:', d.specialNeedsExplain);
+    STMT('Does your child have diagnosed food allergies?');
+    RADIO('Yes', d.foodAllergies==='Yes');
+    RADIO('No', d.foodAllergies==='No');
+    NOTE('The Food Allergy Emergency Plan found on the Important Forms page must be filled and submitted before the first day of the child attending the program.');
+    DIV();
 
-    subHeader('3. Water Activities');
-    multiCheck('Activities consented to:', [
-      { label: 'Water table play',   val: d.waterTablePlay },
-      { label: 'Sprinkler play',     val: d.waterSprinkler },
-      { label: 'Wading pools',       val: d.waterWading },
-      { label: 'Swimming pools',     val: d.waterSwimming },
-      { label: 'Aquatic playgrounds',val: d.waterAquatic },
-    ]);
-    field('Is your child a competent swimmer?', d.competentSwimmer);
-    field('Does your child have any physical/health/behavioral condition that would put them at risk while swimming?', d.swimmingRisk);
+    SUB('9. School-Age Children');
+    QA('My child attends the following school', d.schoolName);
+    QA('School Area Code and Phone No.', d.schoolPhone);
+    STMT('My child has permission to:');
+    CHECK('Walk to or from school or home', !!d.permWalkHome);
+    CHECK('Ride a bus', !!d.permRideBus);
+    CHECK('Be released to the care of their sibling younger than 18 years old', !!d.permSiblingRelease);
+    QA('Authorized pick up or drop off locations other than the child\'s address:', d.pickupLocations);
+    CHECK('Child\'s required immunizations, vision and hearing screening are current and on file at their school.', !!d.immunizationCurrent);
 
-    subHeader('4. Receipt of Written Operational Policies');
-    note('Parent acknowledges receipt of the facility\'s operational policies for the following:');
-    multiCheck('Policies acknowledged:', [
-      { label: 'Discipline and guidance',             val: d.policyDiscipline },
-      { label: 'Procedures for release of children',  val: d.policyRelease },
-      { label: 'Suspension and expulsion',             val: d.policySuspension },
-      { label: 'Illness and exclusion criteria',       val: d.policyIllness },
-      { label: 'Emergency plans',                      val: d.policyEmergency },
-      { label: 'Dispensing medications',               val: d.policyMedications },
-      { label: 'Conducting health checks',             val: d.policyHealthChecks },
-      { label: 'Immunization requirements',            val: d.policyImmunization },
-      { label: 'Safe sleep',                           val: d.policySafeSleep },
-      { label: 'Meals and food service',               val: d.policyMeals },
-      { label: 'Parents discuss concerns with director', val: d.policyDiscussConcerns },
-      { label: 'Visit center without prior approval',  val: d.policyVisitCenter },
-      { label: 'Parent participation in activities',   val: d.policyParticipate },
-      { label: 'Supporting inclusive services',        val: d.policyInclusive },
-      { label: 'Indoor/outdoor physical activity',     val: d.policyPhysicalActivity },
-      { label: 'CCR/DFPS/Child Abuse Hotline contacts',val: d.policyCCR },
-    ]);
+    // ═══ SECTION 3A ══════════════════════════════════════════════════════════
+    SH('Section 3A — Authorization For Emergency Medical Attention');
+    NOTE('In the event I cannot be reached to arrange for emergency medical care, I authorize the person in charge to take my child to:');
+    QA('Name of Physician', d.physicianName);
+    QA('Area Code and Phone No.', d.physicianPhone);
+    QA('Street Address, City, State and ZIP Code', d.physicianAddress);
+    QA('Name of Emergency Care Facility', d.emergencyFacilityName);
+    QA('Area Code and Phone No.', d.emergencyFacilityPhone);
+    QA('Street Address, City, State and ZIP Code', d.emergencyFacilityAddress);
+    CHECK('I give consent for the facility to secure any and all necessary emergency medical care for my child.', d.emergencyMedConsent==='on'||!!d.emergencyMedConsent);
+    QA('Parent or Legal Guardian (printed name)', d.nameSec3);
+    QA('Date', d.sigSec3Date);
 
-    subHeader('5. Meals');
-    multiCheck('Meals to be served:', [
-      { label: 'None',           val: d.mealNone },
-      { label: 'Breakfast',      val: d.mealBreakfast },
-      { label: 'Morning snack',  val: d.mealMorningSnack },
-      { label: 'Lunch',          val: d.mealLunch },
-      { label: 'Afternoon snack',val: d.mealAfternoonSnack },
-      { label: 'Supper',         val: d.mealSupper },
-      { label: 'Evening snack',  val: d.mealEveningSnack },
-    ]);
+    // ═══ SECTION 3B ══════════════════════════════════════════════════════════
+    SH('Section 3B — Child\'s Medical Insurance Information');
+    NOTE('The Center does not carry liability insurance; therefore, the child\'s medical insurance is required for medical emergencies when parents or an alternative contact cannot be reached, and it is necessary for taking the child to a medical facility.');
+    STMT('Medical Insurance Card Attached:');
+    RADIO('Yes', d.insuranceCardAttached==='Yes');
+    RADIO('No — I will submit when dropping my child off for the first time', d.insuranceCardAttached==='No');
+    QA('Insurance Company Name', d.insuranceCompany);
+    QA('Policy / Member ID Number', d.insurancePolicyNum);
+    QA('Policy Holder Name', d.insuranceHolder);
+    QA('Insurance Contact Phone', d.insurancePhone);
+    QA('Insurance Card Attached', d.insuranceCardFile ? 'Yes (see attachment)' : '—');
+    QA('Parent or Legal Guardian (printed name)', d.nameSec3B);
+    QA('Date', d.sigSec3BDate);
 
-    subHeader('6. Days and Times in Care');
-    const days = [
-      ['Monday', d.monAM, d.monPM], ['Tuesday', d.tueAM, d.tuePM],
-      ['Wednesday', d.wedAM, d.wedPM], ['Thursday', d.thuAM, d.thuPM],
-      ['Friday', d.friAM, d.friPM], ['Saturday', d.satAM, d.satPM],
-      ['Sunday', d.sunAM, d.sunPM],
-    ];
-    days.forEach(([day, am, pm]) => {
-      field(day, `AM: ${v(am)}  |  PM: ${v(pm)}`);
-    });
+    // ═══ SECTION 4 ═══════════════════════════════════════════════════════════
+    SH('Section 4 — Requirements for Exclusion from Compliance');
+    RADIO('I have attached a signed and dated affidavit stating that I decline immunizations by reason of conscience, including religious belief, on the form described by Health and Safety Code Section 161.0041 submitted no later than the 90th day after the affidavit is notarized.', d.exclusionCompliance==='immunization_affidavit');
+    RADIO('I have attached a signed and dated affidavit stating that the vision or hearing screening conflicts with the tenets or practices of a church or religious denomination that I am an adherent or member of.', d.exclusionCompliance==='vision_hearing_affidavit');
+    QA('Affidavit Attached', d.affidavitFile ? 'Yes (see attachment)' : '—');
 
-    subHeader('7. Receipt of Parent\'s Rights');
-    field('Acknowledged', checked(d.parentRightsAck));
+    // ═══ SECTION 5 ═══════════════════════════════════════════════════════════
+    SH('Section 5 — Vision Exam Results');
+    QA('Right Eye 20/', d.visionRightEye);
+    QA('Left Eye 20/', d.visionLeftEye);
+    STMT('Result:');
+    RADIO('Pass', d.visionResult==='Pass');
+    RADIO('Fail', d.visionResult==='Fail');
+    QA('Printed Name', d.nameVision);
+    QA('Date Signed', d.sigVisionDate);
 
-    subHeader('8. Child\'s Special Care Needs');
-    multiCheck('Needs checked:', [
-      { label: 'Environmental allergies',       val: d.needEnvAllergies },
-      { label: 'Food intolerances',             val: d.needFoodIntolerance },
-      { label: 'Existing illness',              val: d.needExistingIllness },
-      { label: 'Previous serious illness',      val: d.needPreviousIllness },
-      { label: 'Injuries/hospitalizations',     val: d.needInjuries },
-      { label: 'Activity limitations',          val: d.needActivityLimits },
-      { label: 'Accommodations/modifications',  val: d.needAccommodations },
-      { label: 'Adaptive equipment',            val: d.needAdaptiveEquip },
-      { label: 'Symptoms/complications',        val: d.needComplications },
-      { label: 'Long-term medications',         val: d.needMedications },
-    ]);
-    field('Other needs', d.specialNeedsOther);
-    field('Explanation', d.specialNeedsExplain);
-    field('Diagnosed food allergies?', d.foodAllergies);
+    // ═══ SECTION 6 ═══════════════════════════════════════════════════════════
+    SH('Section 6 — Hearing Exam Results');
+    SUB('Right Ear');
+    QA('1000 Hz', d.hearingRight1000); QA('2000 Hz', d.hearingRight2000); QA('4000 Hz', d.hearingRight4000);
+    STMT('Pass or Fail:');
+    RADIO('Pass', d.hearingRightResult==='Pass'); RADIO('Fail', d.hearingRightResult==='Fail');
+    SUB('Left Ear');
+    QA('1000 Hz', d.hearingLeft1000); QA('2000 Hz', d.hearingLeft2000); QA('4000 Hz', d.hearingLeft4000);
+    STMT('Pass or Fail:');
+    RADIO('Pass', d.hearingLeftResult==='Pass'); RADIO('Fail', d.hearingLeftResult==='Fail');
+    QA('Printed Name', d.nameHearing);
+    QA('Date Signed', d.sigHearingDate);
 
-    subHeader('9. School-Age Children');
-    field('School Name', d.schoolName);
-    field('School Phone', d.schoolPhone);
-    multiCheck('Permissions:', [
-      { label: 'Walk to/from school',      val: d.permWalkHome },
-      { label: 'Ride a bus',               val: d.permRideBus },
-      { label: 'Release to sibling (<18)', val: d.permSiblingRelease },
-    ]);
-    field('Authorized pick-up/drop-off locations', d.pickupLocations);
-    field("Child's immunizations, vision and hearing screening current and on file at school", checked(d.immunizationCurrent));
+    // ═══ SECTION 7 ═══════════════════════════════════════════════════════════
+    SH('Section 7 — Admission Requirement');
+    NOTE('If your child does not attend pre-kindergarten or school away from the program, one of the following must be presented when your child is admitted to the program or within one week of admission.');
+    RADIO('A signed and dated copy of a health care professional\'s statement is attached, which states that the healthcare professional has examined the above named child within the past year and finds the child is able to take part in the program.', d.admissionReq==='signed_copy_attached');
+    RADIO('Medical diagnosis and treatment conflict with the tenets and practices of a recognized religious organization, which I adhere to or am a member of. I have attached a signed and dated affidavit stating this.', d.admissionReq==='religious_conflict');
+    RADIO('My child has been examined within the past year by a health care professional and is able to participate in the program. Within 12 months of admission, I will obtain a health care professional\'s signed statement and submit it to the program.', d.admissionReq==='within_12_months');
+    QA('Supporting Statement / Affidavit Attached', d.admissionDocFile ? 'Yes (see attachment)' : '—');
+    QA('Parent or Legal Guardian (printed name)', d.nameSec7Parent);
+    QA('Date Signed', d.sigSec7ParentDate);
 
-    // ── Section 3 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 3A — Authorization For Emergency Medical Attention');
-    note('In the event I cannot be reached, I authorize the person in charge to take my child to:');
-    field('Physician Name', d.physicianName);
-    field('Physician Phone', d.physicianPhone);
-    field('Physician Address', d.physicianAddress);
-    field('Emergency Care Facility', d.emergencyFacilityName);
-    field('Facility Phone', d.emergencyFacilityPhone);
-    field('Facility Address', d.emergencyFacilityAddress);
-    field('Consent to secure emergency medical care', checked(d.emergencyMedConsent));
-    field('Parent/Guardian Name (Sec. 3)', d.nameSec3);
-    field('Date', d.sigSec3Date);
-
-    // ── Section 3B ────────────────────────────────────────────────────────────
-    sectionHeader('Section 3B — Child\'s Medical Insurance Information');
-    note('The Center does not carry liability insurance; therefore, child\'s medical insurance is required for emergencies.');
-    field('Insurance Card Attached', v(d.insuranceCardAttached));
-    field('Insurance Company', d.insuranceCompany);
-    field('Policy / Member ID', d.insurancePolicyNum);
-    field('Policy Holder', d.insuranceHolder);
-    field('Insurance Phone', d.insurancePhone);
-    field('Parent/Guardian Printed Name (Sec. 3B)', d.nameSec3B);
-    field('Date Signed', d.sigSec3BDate);
-
-    // ── Section 4 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 4 — Requirements for Exclusion from Compliance');
-    field('Selection', d.exclusionCompliance === 'immunization_affidavit'
-      ? 'Affidavit declining immunizations attached'
-      : d.exclusionCompliance === 'vision_hearing_affidavit'
-      ? 'Affidavit re: vision/hearing screening conflict attached'
-      : '—');
-
-    // ── Section 5 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 5 — Vision Exam Results');
-    field('Right Eye 20/', d.visionRightEye);
-    field('Left Eye 20/', d.visionLeftEye);
-    field('Result', d.visionResult);
-    field('Printed Name', d.nameVision);
-    field('Date', d.sigVisionDate);
-
-    // ── Section 6 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 6 — Hearing Exam Results');
-    subHeader('Right Ear');
-    field('1000 Hz', d.hearingRight1000);
-    field('2000 Hz', d.hearingRight2000);
-    field('4000 Hz', d.hearingRight4000);
-    field('Pass or Fail', d.hearingRightResult);
-    subHeader('Left Ear');
-    field('1000 Hz', d.hearingLeft1000);
-    field('2000 Hz', d.hearingLeft2000);
-    field('4000 Hz', d.hearingLeft4000);
-    field('Pass or Fail', d.hearingLeftResult);
-    field('Printed Name', d.nameHearing);
-    field('Date', d.sigHearingDate);
-
-    // ── Section 7 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 7 — Admission Requirement');
-    const admMap = {
-      signed_copy_attached: 'Signed copy of healthcare professional statement is attached',
-      religious_conflict:   'Religious conflict affidavit attached',
-      within_12_months:     'Child examined within past year; statement to be submitted within 12 months',
-    };
-    field('Selection', admMap[d.admissionReq] || v(d.admissionReq));
-    field('Parent/Guardian Name (Sec. 7)', d.nameSec7Parent);
-    field('Date', d.sigSec7ParentDate);
-
-    // ── Section 8 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 8 — Vaccine Information');
-    note('Provide the date your child received each vaccine dose.');
-
+    // ═══ SECTION 8 ═══════════════════════════════════════════════════════════
+    SH('Section 8 — Vaccine Information');
+    NOTE('The following vaccines require multiple doses over time. Provide the date your child received each dose.');
     const vaccines = [
-      ['Hepatitis B',                    [['Birth (first dose)', d.hepB1], ['1–2 months (second dose)', d.hepB2], ['6–18 months (third dose)', d.hepB3]]],
-      ['Rotavirus',                      [['2 months (first dose)', d.rota1], ['4 months (second dose)', d.rota2], ['6 months (third dose)', d.rota3]]],
-      ['Diphtheria, Tetanus, Pertussis', [['2 months (first dose)', d.dtap1], ['4 months (second dose)', d.dtap2], ['6 months (third dose)', d.dtap3], ['15–18 months (fourth dose)', d.dtap4], ['4–6 years (fifth dose)', d.dtap5]]],
-      ['Haemophilus Influenza Type B',   [['2 months (first dose)', d.hib1], ['4 months (second dose)', d.hib2], ['6 months (third dose)', d.hib3], ['12–15 months (fourth dose)', d.hib4]]],
-      ['Pneumococcal',                   [['2 months (first dose)', d.pcv1], ['4 months (second dose)', d.pcv2], ['6 months (third dose)', d.pcv3], ['12–15 months (fourth dose)', d.pcv4]]],
-      ['Inactivated Poliovirus',         [['2 months (first dose)', d.ipv1], ['4 months (second dose)', d.ipv2], ['6–18 months (third dose)', d.ipv3], ['4–6 years (fourth dose)', d.ipv4]]],
-      ['Influenza',                      [['Yearly starting at 6 months', d.flu1]]],
-      ['Measles, Mumps, Rubella',        [['12–15 months (first dose)', d.mmr1], ['4–6 years (second dose)', d.mmr2]]],
-      ['Varicella (Chickenpox)',         [['12–15 months (first dose)', d.var1], ['4–6 years (second dose)', d.var2]]],
-      ['Hepatitis A',                    [['12–23 months (first dose)', d.hepA1], ['6 months after first dose (second dose)', d.hepA2]]],
+      ['Hepatitis B', [['Birth (first dose)', d.hepB1],['1–2 months (second dose)', d.hepB2],['6–18 months (third dose)', d.hepB3]]],
+      ['Rotavirus', [['2 months (first dose)', d.rota1],['4 months (second dose)', d.rota2],['6 months (third dose)', d.rota3]]],
+      ['Diphtheria, Tetanus, Pertussis', [['2 months (first dose)', d.dtap1],['4 months (second dose)', d.dtap2],['6 months (third dose)', d.dtap3],['15–18 months (fourth dose)', d.dtap4],['4–6 years (fifth dose)', d.dtap5]]],
+      ['Haemophilus Influenza Type B', [['2 months (first dose)', d.hib1],['4 months (second dose)', d.hib2],['6 months (third dose)', d.hib3],['12–15 months (fourth dose)', d.hib4]]],
+      ['Pneumococcal', [['2 months (first dose)', d.pcv1],['4 months (second dose)', d.pcv2],['6 months (third dose)', d.pcv3],['12–15 months (fourth dose)', d.pcv4]]],
+      ['Inactivated Poliovirus', [['2 months (first dose)', d.ipv1],['4 months (second dose)', d.ipv2],['6–18 months (third dose)', d.ipv3],['4–6 years (fourth dose)', d.ipv4]]],
+      ['Influenza', [['Yearly, starting at 6 months. Two doses given at least four weeks apart are recommended for children who are getting the vaccine for the first time and for some other children in this age group.', d.flu1]]],
+      ['Measles, Mumps, Rubella', [['12–15 months (first dose)', d.mmr1],['4–6 years (second dose)', d.mmr2]]],
+      ['Varicella (Chickenpox)', [['12–15 months (first dose)', d.var1],['4–6 years (second dose)', d.var2]]],
+      ['Hepatitis A', [['12–23 months (first dose)', d.hepA1],['The second dose should be given six to 18 months after the first dose.', d.hepA2]]],
     ];
-    vaccines.forEach(([vaccineName, doses]) => {
-      subHeader(vaccineName);
-      doses.forEach(([schedule, date]) => field(schedule, date));
-    });
+    vaccines.forEach(([name, doses]) => { SUB(name); doses.forEach(([sched, date]) => QA(sched, date)); });
 
-    // ── Section 9 ─────────────────────────────────────────────────────────────
-    sectionHeader('Section 9 — Vaccination Records');
-    field('Records', d.vaccinationRecords === 'attached' ? 'Attached' : 'Will provide on first day');
+    // ═══ SECTION 9 ═══════════════════════════════════════════════════════════
+    SH('Section 9 — Vaccination Records');
+    NOTE('Please attach a copy of vaccination records from your public health personnel\'s office.');
+    RADIO('I am attaching a copy of my child\'s vaccination records below.', d.vaccinationRecords==='attached');
+    RADIO('Records will be provided when my child is dropped off at the program for the first time.', d.vaccinationRecords==='on_first_day');
+    QA('Vaccination Records Attached', d.vaccinationRecordsFile ? 'Yes (see attachment)' : '—');
 
-    // ── Section 10 ────────────────────────────────────────────────────────────
-    sectionHeader('Section 10 — Varicella for Chickenpox');
-    field('Chickenpox disease date (if applicable)', d.chickenpoxDate);
-    field('Printed Name', d.nameVaricella);
-    field('Date', d.sigVaricellaDate);
+    // ═══ SECTION 10 ══════════════════════════════════════════════════════════
+    SH('Section 10 — Varicella for Chickenpox');
+    NOTE('Varicella, the vaccine for chickenpox, is not required if your child has had chickenpox disease. If your child has had chickenpox, complete the statement below.');
+    QA('My child had varicella disease, chickenpox, on or about [date] and does not need varicella vaccine.', d.chickenpoxDate);
+    QA('Printed Name', d.nameVaricella);
+    QA('Date Signed', d.sigVaricellaDate);
 
-    // ── Section 11 ────────────────────────────────────────────────────────────
-    sectionHeader('Section 11 — Additional Information About Immunizations');
-    field('Reference', 'www.dshs.state.tx.us/immunize/public.shtm');
+    // ═══ SECTION 11 ══════════════════════════════════════════════════════════
+    SH('Section 11 — Additional Information About Immunizations');
+    STMT('For more information about immunizations, visit the Texas Department of State Health Services website at www.dshs.state.tx.us/immunize/public.shtm.');
 
-    // ── Section 12 ────────────────────────────────────────────────────────────
-    sectionHeader('Section 12 — Gang Free Zone');
-    note('Under Texas Penal Code, any area within 1,000 feet of a child care center is a gang-free zone.');
+    // ═══ SECTION 12 ══════════════════════════════════════════════════════════
+    SH('Section 12 — Gang Free Zone');
+    STMT('Under the Texas Penal Code, any area within 1,000 feet of a program is a gang-free zone, where criminal offenses related to organized criminal activity are subject to harsher penalties.');
 
-    // ── Photo Consent ─────────────────────────────────────────────────────────
-    sectionHeader('Photo & Media Consent');
-    note('Center activities may be photographed/video-recorded. Parent consent for child to appear in digital and printed media.');
-    field('Consent', v(d.photoConsent));
+    // ═══ PHOTO CONSENT ═══════════════════════════════════════════════════════
+    SH('Photo & Media Consent');
+    STMT('I acknowledge that Center activities may be photographed or video-recorded from time to time and give my consent for my child to appear in digital and printed media used to promote the Center.');
+    STMT('Please select one:');
+    RADIO('I consent', d.photoConsent==='I consent');
+    RADIO('I do not consent', d.photoConsent==='I do not consent');
 
-    // ── Section 14 ────────────────────────────────────────────────────────────
-    sectionHeader('Section 14 — Acknowledgment & Electronic Signature');
-    note('By typing their full name, the parent/guardian electronically signed this form, acknowledging they have read and agree to the Center\'s parent handbook and all operational policies.');
-    field('Handbook Acknowledged', checked(d.handbookAck));
-    field('Electronic Signature (Full Name)', d.signerName);
-    field('Date Signed', d.sigDate);
+    // ═══ SECTION 14 ══════════════════════════════════════════════════════════
+    SH('Section 14 — Signatures');
+    STMT('By signing the enrollment form, I acknowledge that I have read and understand the Center\'s parent handbook and agree to follow all the operational policies stated in the handbook.');
+    CHECK('I have read and agree to the Center\'s parent handbook and all operational policies.', d.handbookAck==='on'||!!d.handbookAck);
+    STMT('By typing your full name below, you are signing this form electronically. Your typed name is legally equivalent to a handwritten (wet) signature and confirms your agreement to all statements in this enrollment form.');
+    QA('Full Name (Electronic Signature)', d.signerName);
+    QA('Date Signed', d.sigDate);
 
-    // ── Footer ────────────────────────────────────────────────────────────────
+    // ═══ FOOTER ══════════════════════════════════════════════════════════════
     const pages = doc.bufferedPageRange();
-    for (let i = 0; i < pages.count; i++) {
-      doc.switchToPage(pages.start + i);
-      doc.fillColor(MUTED).fontSize(7.5).font('Helvetica')
-         .text(`Divine Kids — Child Enrollment Form  |  Page ${i + 1} of ${pages.count}`,
-               45, doc.page.height - 30, { width: W, align: 'center' });
+    for (let i=0; i<pages.count; i++) {
+      doc.switchToPage(pages.start+i);
+      doc.fillColor(MUTED).fontSize(7).font('Helvetica')
+         .text('Divine Kids — Child Enrollment Form  |  Page '+(i+1)+' of '+pages.count,
+               45, doc.page.height-28, {width:W, align:'center'});
     }
-
     doc.flushPages();
     doc.end();
   });
 }
+
 
 // ── Build comprehensive HTML email ──────────────────────────────────────────
 function buildHtml(d, isCenter) {
