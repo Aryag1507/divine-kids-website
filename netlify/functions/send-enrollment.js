@@ -122,6 +122,7 @@ function buildPdf(d) {
 
     field("Guardian's Phone", d.guardianPhone);
     field('Custody Documents on File', v(d.custodyDocs));
+    field('Custody Document Attached', d.custodyDocFile ? 'Yes (attached)' : '—');
 
     subHeader('Emergency Contact (when parent/guardian cannot be reached)');
     field('Name', d.ec1Name);
@@ -439,6 +440,7 @@ function buildHtml(d, isCenter) {
       ${row("Date of Admission", d.dateAdmission)}
       ${row("Date of Withdrawal", d.dateWithdrawal)}
       ${row("Custody Docs on File", d.custodyDocs)}
+      ${row("Custody Document Attached", d.custodyDocFile ? "Yes (attached)" : "—")}
     `)}
     ${sec("Parent / Guardian 1", `
       ${row("Name", d.parent1Name)}
@@ -670,7 +672,7 @@ exports.handler = async function (event) {
   const attachments = [
     { filename: `Enrollment-Form-${v(data.childFullName).replace(/\s+/g,'-')}.pdf`, content: pdfBuffer, contentType: 'application/pdf' },
   ];
-  const fileFields = { insuranceCardFile:'Insurance-Card', affidavitFile:'Affidavit', admissionDocFile:'Admission-Document', vaccinationRecordsFile:'Vaccination-Records' };
+  const fileFields = { insuranceCardFile:'Insurance-Card', affidavitFile:'Affidavit', admissionDocFile:'Admission-Document', vaccinationRecordsFile:'Vaccination-Records', custodyDocFile:'Custody-Document' };
   for (const [field, label] of Object.entries(fileFields)) {
     const f = data[field];
     if (f && f.data) attachments.push({ filename: f.name || `${label}.pdf`, content: Buffer.from(f.data, 'base64'), contentType: f.type || 'application/pdf' });

@@ -59,7 +59,7 @@ document.getElementById('enrollmentForm').addEventListener('submit', async funct
   const data = Object.fromEntries(new FormData(form).entries());
 
   // Collect and compress enrollment file attachments
-  const fileFields = ['insuranceCardFile', 'affidavitFile', 'admissionDocFile', 'vaccinationRecordsFile'];
+  const fileFields = ['insuranceCardFile', 'affidavitFile', 'admissionDocFile', 'vaccinationRecordsFile', 'custodyDocFile'];
   for (const fieldName of fileFields) {
     const input = document.getElementById(fieldName) || form.elements[fieldName];
     if (input) {

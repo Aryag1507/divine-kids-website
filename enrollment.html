@@ -186,10 +186,21 @@
         <div class="form-group" style="margin-bottom:16px;">
           <label>Custody Documents on File?</label>
           <div class="radio-group">
-            <label><input type="radio" name="custodyDocs" value="Yes" /> Yes</label>
+            <label><input type="radio" name="custodyDocs" value="Yes" id="custodyYes" /> Yes</label>
             <label><input type="radio" name="custodyDocs" value="No" /> No</label>
           </div>
+          <div id="custodyUpload" style="display:none;margin-top:10px;">
+            <label for="custodyDocFile" style="font-size:.875rem;font-weight:600;">Attach Custody Document</label>
+            <input type="file" id="custodyDocFile" name="custodyDocFile" accept="image/*,.pdf" style="margin-top:4px;display:block;" />
+          </div>
         </div>
+        <script>
+          document.querySelectorAll('input[name="custodyDocs"]').forEach(function(r) {
+            r.addEventListener('change', function() {
+              document.getElementById('custodyUpload').style.display = this.value === 'Yes' ? 'block' : 'none';
+            });
+          });
+        </script>
 
         <!-- Emergency Contact -->
         <h4>In Case of an Emergency, When the Parent or Guardian Cannot Be Reached, Call:</h4>
