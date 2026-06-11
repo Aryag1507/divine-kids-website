@@ -604,7 +604,7 @@ function buildHtml(d, isCenter) {
       ${row("Reference", 'www.dshs.state.tx.us/immunize/public.shtm')}
     `)}
     ${sec("Section 12 — Gang Free Zone", `
-      ${row("Notice", 'Any area within 1,000 feet of a child care center is a gang-free zone under Texas Penal Code.')}
+      ${row("Notice", 'Any area within 1,000 feet of a Preschool and After-School Program is a gang-free zone under Texas Penal Code.')}
     `)}
     ${sec("Photo & Media Consent", `
       ${row("I give consent for my child to appear in digital and printed media used to promote the Center", d.photoConsent)}
